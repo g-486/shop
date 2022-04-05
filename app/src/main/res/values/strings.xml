@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MyShop</string>
+    <string name="jump_out">跳过</string>
+    <string name="name">小食餐厅</string>
+    <string name="input_user">请输入用户名</string>
+    <string name="input_pass">请输入密码</string>
+    <string name="input_repass">请再次输入密码</string>
+    <string name="remember_key">记住密码</string>
+    <string name="home">首页</string>
+    <string name="order">订单</string>
+    <string name="me">我的</string>
+</resources>

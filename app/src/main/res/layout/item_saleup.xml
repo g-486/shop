@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300px"
+    android:layout_height="350px"
+    android:clickable="true"
+    android:gravity="center_horizontal">
+    <ImageView
+        android:id="@+id/saleup_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher"
+        android:layout_alignParentTop="true"/>
+    <!--  商品名  -->
+    <TextView
+        android:id="@+id/saleup_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/saleup_icon"
+        android:text="name"
+        android:textSize="15dp" />
+    <!--  销售量  -->
+    <TextView
+        android:id="@+id/saleup_num"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@id/saleup_name"
+        android:text="sale out num"
+        android:textSize="15dp"/>
+</RelativeLayout>
