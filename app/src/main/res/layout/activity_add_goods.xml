@@ -27,7 +27,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/add_name"
+                android:id="@+id/add_good_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请输入商品名称" />
@@ -37,7 +37,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +44,7 @@
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/add_desc"
+                android:id="@+id/add_good_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="请输入商品简介" />
@@ -59,99 +58,84 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="配        料："
+                android:text="价格："
                 android:textSize="20dp" />
 
             <EditText
+                android:id="@+id/add_goods_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="请输入商品名称" />
+                android:hint="请输入商品价格" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="价        格："
+                android:text="种类："
                 android:textSize="20dp" />
 
             <EditText
-                android:id="@+id/add_price"
+                android:id="@+id/add_goods_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="请输入商品名称" />
+                android:hint="请输入商品种类" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:orientation="horizontal">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="份        额："
+                android:text="份量："
                 android:textSize="20dp" />
 
-            <RadioGroup
+            <EditText
+                android:id="@+id/add_goods_weight"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="40dp"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="大份"
-                    android:textSize="20dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:text="中份"
-                    android:textSize="20dp" />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:text="小份"
-                    android:textSize="20dp" />
-            </RadioGroup>
+                android:hint="请输入商品份量" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/radius_white_box"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="口味类型："
+                android:textSize="20dp" />
+
+            <EditText
+                android:id="@+id/add_goods_taste"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="口味类型" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <ImageView
                 android:id="@+id/pic"
-                android:layout_width="match_parent"
-                android:layout_height="130dp" />
-            <TextView
-                android:id="@+id/updata_pic"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="@drawable/radius_white_box"
-                android:gravity="center"
-                android:visibility="gone"
-                android:text="上传图片" />
+                android:layout_width="100dp"
+                android:layout_height="130dp"
+                android:background="@drawable/black_border"
+                android:layout_margin="5dp"
+                android:padding="5dp"/>
 
             <Button
                 android:id="@+id/add_pic"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:background="@drawable/button_bg_black"
-                android:text="确认上传"
-                android:textSize="15dp" />
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|bottom"
+                android:background="#22000000"
+                android:text="上传图片"
+                android:textSize="10dp"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
         <Button

@@ -1,7 +1,7 @@
 package com.app.shop.sql.helper;
 
+import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.app.shop.sql.Dao.UserDao;
@@ -77,38 +77,31 @@ public class UserDBHelper extends BaseDBHelper implements UserDao {
     }
 
     @Override
-    public int delete(String condition) {
-        return 0;
+    public boolean insert(User user) {
+        openWriteLink();
+        ContentValues cv=new ContentValues();
+        cv.put("name",user.Uname);
+
+        return mDB.insert(table_name,null,cv)>0;
     }
 
     @Override
-    public long insert(List list) {
-        return 0;
+    public boolean delete(String condition) {
+        return false;
     }
 
     @Override
-    public int update(Object item, String name) {
-        return 0;
+    public boolean update(User item, String name) {
+        return false;
     }
 
     @Override
-    public List query(String... condition) {
+    public List<User> queryAll() {
         return null;
     }
 
     @Override
-    public User queryBy(String conditon) {
-        if (mDB.isOpen()) {
-            User user = new User();
-            String sql = "select * from " + table_name + " where _id=?" + conditon;
-            Cursor cursor = mDB.rawQuery(sql, null);
-            user.setUid(cursor.getInt(0));
-            user.setUname(cursor.getString(1));
-            return user;
-        } else {
-            openReadLink();
-            openWriteLink();
-            return queryBy(conditon);
-        }
+    public List<User> queryBy(String conditon) {
+        return null;
     }
 }

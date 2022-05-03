@@ -4,50 +4,28 @@ package com.app.shop.sql.table;
  * create by 呵呵 on 2022/3/17.
  */
 public class Goods {
-    private int Gid;
-    private String Gname;
-    private double price;
-    private String desc;
-    private int salenum;
-    public int rowid;
+    public int Gid;
+    public String Gname;
+    public double price;
+    public String desc;  //商品描述
+    public String type;   //商品种类
+    public String image; //图片存储路径
+    public String weight;  //分量
+    public String taste;   //口味类型
+    public int salenum;  //销售量
 
-    public int getGid() {
-        return Gid;
+    public Goods() {
     }
 
-    public void setGid(int gid) {
+    public Goods(int gid, String gname, double price, String desc, String type, String image, String weight, String taste, int salenum) {
         Gid = gid;
-    }
-
-    public String getGname() {
-        return Gname;
-    }
-
-    public void setGname(String gname) {
         Gname = gname;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
         this.price = price;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
         this.desc = desc;
-    }
-
-    public int getSalenum() {
-        return salenum;
-    }
-
-    public void setSalenum(int salenum) {
+        this.type = type;
+        this.image = image;
+        this.weight = weight;
+        this.taste = taste;
         this.salenum = salenum;
     }
 }

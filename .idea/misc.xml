@@ -3,15 +3,21 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/back_white.xml" value="0.1" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/black_border.xml" value="0.1225" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/btn_bg.xml" value="0.1" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/button_bg_black.xml" value="0.139" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/check_choose.xml" value="0.1" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/main_tab_icon_home.xml" value="0.1" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/order_show_on.xml" value="0.139" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/radius_box.xml" value="0.139" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/radius_white_box.xml" value="0.1" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/saleup_box.xml" value="0.103" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/drawable/switch_choose.xml" value="0.138" />
-        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_add_goods.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_add_goods.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_login.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_main.xml" value="0.11203703703703703" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_setting.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/activity_splash.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/common_toolbar.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/fragment_good_datil.xml" value="0.20885416666666667" />
@@ -20,10 +26,34 @@
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/fragment_order.xml" value="0.2" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/fragment_order_list.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/fragment_order_table.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/good_detail.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/item_goods.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/main_tab.xml" value="0.11203703703703703" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/layout/popupwindow_camera_need.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shop/app/src/main/res/menu/goods_option.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shop/app/src/main/res/xml/file_path.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/drawable/ic_close.xml" value="0.1" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/drawable/radius_white_box.xml" value="0.1375" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/drawable/top_radius_box.xml" value="0.1375" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/activity_main.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/detail_good.xml" value="0.18" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/detail_order.xml" value="0.11875" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/fragment_mine.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/fragment_order.xml" value="0.33" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/good_detail.xml" value="0.42407407407407405" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/good_option.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/item_dialog.xml" value="0.20416666666666666" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/item_order.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/item_say.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/main_tab.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/gray_btn.xml" value="0.132" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/top_radius_box.xml" value="0.132" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/detail_order.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/fragment_home.xml" value="0.1" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/fragment_mine.xml" value="0.22" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/gray_btn.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_saleup.xml" value="0.20185185185185187" />
       </map>
     </option>
   </component>

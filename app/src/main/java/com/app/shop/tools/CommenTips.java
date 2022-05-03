@@ -32,12 +32,6 @@ public class CommenTips {
         return date1;
     }
 
-    public static void shortTips(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_SHORT).show();
-    }
-    public static void longTips(Context context,String msg){
-        Toast.makeText(context,msg,Toast.LENGTH_LONG).show();
-    }
     public static void contentTips(Context context,String msg){
         new AlertDialog.Builder(context)
                 .setTitle("")

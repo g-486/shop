@@ -12,8 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.app.shop.R;
-import com.app.shop.tools.CommenTips;
 import com.app.shop.tools.UserInfo;
+import com.app.shop.utils.SharedPreferencesUtils;
+import com.app.shop.utils.ToastUtils;
 
 import java.util.Map;
 
@@ -87,15 +88,16 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
         String user=ed_user.getText().toString();
         String pass=ed_pass.getText().toString();
         if(TextUtils.isEmpty(user)||TextUtils.isEmpty(pass)){
-            CommenTips.shortTips(this,"用户名或密码不能为空！");
+            ToastUtils.shortToast(this,"用户名或密码不能为空！");
         }
         if(UserInfo.checkInfo(LoginActivity.this,user,pass)){
             UserInfo.setRemember(LoginActivity.this,remember.isChecked());
+            SharedPreferencesUtils.setSignState(this,true);
             intent=new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
 
         }else {
-            CommenTips.longTips(LoginActivity.this,"账号或密码错误，请重新输入！");
+            ToastUtils.shortToast(LoginActivity.this,"账号或密码错误，请重新输入！");
         }
     }
 }

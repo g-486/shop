@@ -5,6 +5,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -14,11 +15,13 @@ import com.app.shop.base.BaseActivity;
 import com.app.shop.ui.framents.HomeFragment;
 import com.app.shop.ui.framents.MineFragment;
 import com.app.shop.ui.framents.OrderFragment;
+import com.app.shop.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
+    private static boolean sign;
 
     private ViewPager2 viewPager;
     private LinearLayout llhome, llorder, llme;
@@ -27,9 +30,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(getLayoutId());
+//        sign=SharedPreferencesUtils.getSignState(this);
         initView();
         initPager();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override

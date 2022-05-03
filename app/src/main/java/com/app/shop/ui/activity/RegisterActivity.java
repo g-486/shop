@@ -10,6 +10,7 @@ import android.widget.EditText;
 import com.app.shop.R;
 import com.app.shop.tools.CommenTips;
 import com.app.shop.tools.UserInfo;
+import com.app.shop.utils.ToastUtils;
 
 public class RegisterActivity extends BarActivity {
 
@@ -52,16 +53,16 @@ public class RegisterActivity extends BarActivity {
         String pass=ed_pass.getText().toString();
         String repass=ed_repass.getText().toString();
         if (TextUtils.isEmpty(user)){
-            CommenTips.longTips(this,"用户名不能为空，请输入用户名");
+            ToastUtils.longToast(this,"用户名不能为空，请输入用户名");
         }
         if(TextUtils.isEmpty(pass)||TextUtils.isEmpty(repass)){
-            CommenTips.longTips(this,"输入密码不一致，请确认后重新输入！");
+            ToastUtils.longToast(this,"输入密码不一致，请确认后重新输入！");
         }
         if (pass.equals(repass)&&UserInfo.saveInfo(this,user,pass)){
             Intent intent=new Intent(RegisterActivity.this,LoginActivity.class);
             startActivity(intent);
         }else {
-            CommenTips.longTips(this,"注册失败");
+            ToastUtils.longToast(this,"注册失败");
         }
     }
 }

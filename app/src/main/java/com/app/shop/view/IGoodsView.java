@@ -10,9 +10,4 @@ import java.util.List;
 public interface IGoodsView extends IBaseView {
     //显示图片，文字，进度条，动画。。。
     void showGoodsView(List<Goods> goods);
-
-    @Override
-    default void showErorMsg(String msg) {
-
-    }
 }

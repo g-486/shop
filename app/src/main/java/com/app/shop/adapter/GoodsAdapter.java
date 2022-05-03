@@ -1,7 +1,8 @@
 package com.app.shop.adapter;
 
 import android.content.Context;
-import android.view.ContextMenu;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,16 +45,36 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsHodler>
 
     @Override
     public void onBindViewHolder(@NonNull GoodsHodler holder, int position) {
-        if (holder.icon == null) {
-            holder.icon.setImageResource(R.mipmap.ic_launcher);
+        String path = data.get(position).image;
+        if (path != null && !path.equals("")) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            holder.icon.setImageBitmap(bitmap);
         } else {
-            //使用自己的图片
+            //使用默认的图片
+            holder.icon.setImageResource(R.mipmap.ic_launcher);
         }
-        holder.name.setText(data.get(position).getGname());
-        holder.desc.setText(data.get(position).getDesc());
-        holder.price.setText(String.valueOf(data.get(position).getPrice()));
-        holder.num.setText(String.valueOf(data.get(position).getSalenum()));
+        holder.name.setText(data.get(position).Gname);
+        holder.desc.setText(data.get(position).desc);
+        holder.price.setText(String.valueOf(data.get(position).price));
+        holder.num.setText(String.valueOf(data.get(position).salenum));
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clickListener != null) {
+                    clickListener.onItemClick(view, holder.getAdapterPosition(), data.get(holder.getAdapterPosition()));
+                }
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                if (clickListener != null) {
+                    clickListener.onItemLongClick(view, holder.getAdapterPosition(), data.get(holder.getAdapterPosition()));
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -81,30 +102,16 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsHodler>
             price = itemView.findViewById(R.id.goods_price);
             num = itemView.findViewById(R.id.sale_num);
 
-            //点击事件   点解条目，可查看商品的更详细信息
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (clickListener != null) {
-                        clickListener.onItemClick(getAdapterPosition());
-                    }
-                }
-            });
-
         }
-
     }
 
     //监听器   点击事件接口  添加点击事件的方法
     private onGoodsItemClickListener clickListener;
-
     public interface onGoodsItemClickListener {
-        void onItemClick(int position);
+        void onItemClick(View view,int position,Goods goods);
+        void onItemLongClick(View view, int position, Goods goods);
     }
-
     public void setOnGoodsItemClickListener(onGoodsItemClickListener listener) {
         clickListener = listener;
     }
-
-
 }

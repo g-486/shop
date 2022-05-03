@@ -19,10 +19,10 @@ public class OrderModel implements IOrderModel{
         List<Orders> ordersList=new ArrayList<>();
         for (int i = 20; i > 0; i--) {
             Orders order=new Orders();
-            order.setDate("yyyy-MM-dd hh:mm");
-            order.setFoods("ncksjbvkabs");
-            order.setLevel(4);
-            order.setSumPrice(1234.445);
+            order.date="yyyy-MM-dd hh:mm";
+            order.foods="ncksjbvkabs";
+            order.level=4;
+            order.sumPrice=1234.445;
             ordersList.add(order);
         }
         return ordersList;

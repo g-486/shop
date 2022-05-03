@@ -1,5 +1,6 @@
 package com.app.shop.sql.helper;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,8 +21,8 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
     private static OrdersDBHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
-    public OrdersDBHelper(Context context,int version) {
-        super(context, DBname, null ,version);
+    public OrdersDBHelper(Context context, int version) {
+        super(context, DBname, null, version);
     }
 
     public OrdersDBHelper(Context context) {
@@ -30,7 +31,7 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
 
     public OrdersDBHelper getInstance(Context context, int version) {
         if (mHelper == null && version > 0) {
-            mHelper = new OrdersDBHelper(context,version);
+            mHelper = new OrdersDBHelper(context, version);
         } else if (mHelper == null) {
             mHelper = new OrdersDBHelper(context);
         }
@@ -63,98 +64,88 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
         return mDB;
     }
 
+    //只在第一次打开数据库时执行
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String drop = "DROP TABLE IF EXISTS" + table_name + ";";
+        String drop = String.format("drop table if exists %s ;", table_name);
         sqLiteDatabase.execSQL(drop);
-        String create = "CREATE TABLE IF NOT EXISTS " + table_name + "("
-                + "_ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-                + "Uid integer," + "sumPrice FLOAT," + "level INTEGER,"
-                + "FOODS VARCHER,DATE VARCHER,OTHER VARCHER,SAYS VARCHER" + ")";
+        String create = String.format("create table if not exists %s("
+                + "_id integer primary key autoincrement not null,"
+                + "uid integer," + "sumprice float," + "level integer,"
+                + "foods varchar," + "date varchar," + "other varchar)", table_name);
         sqLiteDatabase.execSQL(create);
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldV, int newV) { }
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
-    @Override
-    public int delete(String condition) {
-        return mDB.delete(table_name, condition, null);
     }
 
     @Override
-    public long insert(List<Orders> list) {
-        long reault = -1;
-//        for (int i = 0; i < list.size(); i++) {
-//            Orders item = list.get(i);
-//            List<Orders> lists = new ArrayList<>();
-//            if (item.getGname() != null) {
-//                String name=String.format("Gname=%s",item.getGname());
-//                lists=query(name);
-//                if (lists.size()>0){
-//                    update(item,name);
-//                    //未完成
-//                }
-//            }
-//            ContentValues cv=new ContentValues();
-//            cv.put("uid",item.getUid());
-//            cv.put("sumPrice",item.getSumPrice());
-//            cv.put("level",item.getLevel());
-//            cv.put("foods",item.getFoods());
-//            cv.put("date",item.getDate());
-//            cv.put("other",item.getOther());
-//            cv.put("saya",item.getSays());
-//            reault= mDB.insert(table_name,"",cv);
-//            if (reault==-1){
-//                return reault;
-//            }
-//        }
-        return reault;
+    public boolean insert(Orders orders) {
+        openWriteLink();
+        ContentValues cv = new ContentValues();
+        cv.put("Uid", orders.Uid);
+        cv.put("sumprice", orders.sumPrice);
+        cv.put("level", orders.level);
+        cv.put("foods", orders.foods);
+        cv.put("data", orders.date);
+        cv.put("other", orders.other);
+//        String sql="insert into orders(uid,sumprice,level,foods,data,other) values (?,?,?,?,?,?)";
+//        mDB.execSQL(sql,new Object[]{orders.Uid, orders.sumPrice,orders.level,orders.foods,orders.date,orders.other});
+        return mDB.insert(table_name, null, cv) > 0;
     }
 
     @Override
-    public int update(Orders item, String name) {
-//        ContentValues cv=new ContentValues();
-//        cv.put("Uid",item.getUid());
-//        cv.put("sumPrice",item.getSumPrice());
-//        cv.put("level",item.getLevel());
-//        cv.put("foods",item.getFoods());
-//        cv.put("date",item.getDate());
-//        cv.put("other",item.getOther());
-//        cv.put("says",item.getSays());
-//        return mDB.update(table_name,cv,name,null);
-        return 0;
+    public boolean delete(String condition) {
+        return false;
     }
-    //查询所有
+
     @Override
-    public List<Orders> query(String... condition) {
+    public boolean update(Orders item, String name) {
+        return false;
+    }
+
+    @Override
+    public List<Orders> queryAll() {
         openReadLink();
-        String sql=String.format("select order(_id,Uid,sumPrice,level,foods,date,other,says)"+
-                "from %s ",table_name);
-        if (condition!=null){
-            //条件查询
-        }
-        List<Orders> list=new ArrayList<>();
-        Cursor cursor=mDB.rawQuery(sql,null);
-        //取出记录
-        while (cursor.moveToNext()){
-            Orders order=new Orders();
-            order.rowid=cursor.getInt(0);
-            order.setUid(cursor.getInt(1));
-            order.setSumPrice(cursor.getInt(2));
-            order.setLevel(cursor.getInt(3));
-            order.setFoods(cursor.getString(4));
-            order.setDate(cursor.getString(5));
-            order.setOther(cursor.getString(6));
-            order.setSays(cursor.getString(7));
-            list.add(order);
-        }
-        cursor.close();
+//        String sql = String.format("select _id,uid,sumprice,level,foods,data,other from %s", table_name);
+        List<Orders> list = new ArrayList<>();
+        Cursor cursor = mDB.query(table_name, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Orders order = new Orders();
+                order.Oid = cursor.getInt(cursor.getColumnIndex("rowid"));
+                order.Uid = cursor.getInt(cursor.getColumnIndex("uid"));
+                order.sumPrice = cursor.getDouble(cursor.getColumnIndex("sumprice"));
+                order.level = cursor.getInt(cursor.getColumnIndex("level"));
+                order.foods = cursor.getString(cursor.getColumnIndex("foods"));
+                order.date = cursor.getString(cursor.getColumnIndex("data"));
+                order.other = cursor.getString(cursor.getColumnIndex("other"));
+                list.add(order);
+            }
+        }cursor.close();
         return list;
     }
 
     @Override
-    public Orders queryBy(String conditon) {
-        return null;
+    public List<Orders> queryBy(String conditon) {
+        openReadLink();
+        List<Orders> list=new ArrayList<>();
+        Cursor cursor = mDB.query(table_name, null, null, null, null, null, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Orders order = new Orders();
+                order.Oid = cursor.getInt(cursor.getColumnIndex("rowid"));
+                order.Uid = cursor.getInt(cursor.getColumnIndex("uid"));
+                order.sumPrice = cursor.getDouble(cursor.getColumnIndex("sumprice"));
+                order.level = cursor.getInt(cursor.getColumnIndex("level"));
+                order.foods = cursor.getString(cursor.getColumnIndex("foods"));
+                order.date = cursor.getString(cursor.getColumnIndex("data"));
+                order.other = cursor.getString(cursor.getColumnIndex("other"));
+                list.add(order);
+            }
+        }cursor.close();
+        return list;
     }
 }

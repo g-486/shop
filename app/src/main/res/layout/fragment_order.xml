@@ -18,7 +18,7 @@
             android:padding="8dp">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/home_saleup"
+                android:id="@+id/good_saleup"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:clickable="true"
@@ -98,7 +98,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/radius_white_box"
+            android:background="@drawable/top_radius_box"
             android:orientation="vertical"
             android:padding="5dp">
 
@@ -115,18 +115,11 @@
                     android:text="订单详情如下:"
                     android:textSize="20dp" />
                 <!-- 切换订单显示方式   列表  图表 -->
-                <Switch
-                    android:id="@+id/switch_"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:checked="false"
-                    android:background="@drawable/switch_choose"/>
                 <ImageView
                     android:id="@+id/look_way"
                     android:layout_width="60dp"
                     android:layout_height="match_parent"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_marginRight="10dp"
                     android:background="@drawable/order_show_on" />
             </LinearLayout>
@@ -140,12 +133,60 @@
                 android:id="@+id/order_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_startpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/dp_20"
+                    android:text="首页"/>
+                <TextView
+                    android:id="@+id/tv_oldpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/dp_20"
+                    android:text="上一页"/>
+                <EditText
+                    android:id="@+id/et_to_page"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="10"/>
+                <TextView
+                    android:id="@+id/tv_sumpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    android:text="/20页"/>
+                <TextView
+                    android:id="@+id/tv_jump_to"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:textSize="15dp"
+                    android:text="跳转"/>
+                <TextView
+                    android:id="@+id/tv_nextpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="@dimen/dp_20"
+                    android:text="下一页"/>
+                <TextView
+                    android:id="@+id/tv_endpage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/dp_20"
+                    android:text="尾页"/>
+            </LinearLayout>
         </LinearLayout>
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/order_show"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:visibility="gone"/>
     </LinearLayout>
 </ScrollView>

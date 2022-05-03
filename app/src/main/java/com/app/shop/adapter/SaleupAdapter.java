@@ -1,6 +1,8 @@
 package com.app.shop.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,9 +39,25 @@ public class SaleupAdapter extends RecyclerView.Adapter<SaleupAdapter.GoodsHodle
 
     @Override
     public void onBindViewHolder(@NonNull GoodsHodler holder, int position) {
-        holder.icon.setImageResource(R.mipmap.ic_launcher);
-        holder.name.setText(data.get(position).getGname());
-        holder.num.setText(String.valueOf(data.get(position).getSalenum()));
+        String path = data.get(position).image;
+        if (path != null && !path.equals("")) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            holder.icon.setImageBitmap(bitmap);
+        } else {
+            //使用默认的图片
+            holder.icon.setImageResource(R.mipmap.ic_launcher);
+        }
+        holder.name.setText(data.get(position).Gname);
+        holder.num.setText(String.valueOf(data.get(position).salenum));
+        //点击事件   点解条目，可查看商品的更详细信息
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clickListener!=null){
+                    clickListener.onItemClick(view,holder.getAdapterPosition(),data.get(holder.getAdapterPosition()));
+                }
+            }
+        });
     }
 
     @Override
@@ -57,23 +75,13 @@ public class SaleupAdapter extends RecyclerView.Adapter<SaleupAdapter.GoodsHodle
             icon = itemView.findViewById(R.id.saleup_icon);
             name = itemView.findViewById(R.id.saleup_name);
             num = itemView.findViewById(R.id.saleup_num);
-
-            //点击事件   点解条目，可查看商品的更详细信息
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (clickListener!=null){
-                        clickListener.onItemClick(getAdapterPosition());
-                    }
-                }
-            });
         }
     }
 
     //监听器   点击事件接口  添加点击事件的方法
     private onGoodsItemClickListener clickListener;
     public interface onGoodsItemClickListener{
-        void onItemClick(int position);
+        void onItemClick(View view, int position, Goods good);
     }
     public void setOnGoodsItemClickListener(onGoodsItemClickListener listener){
         clickListener=listener;

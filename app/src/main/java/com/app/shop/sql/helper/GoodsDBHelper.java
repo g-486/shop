@@ -68,10 +68,11 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
     public void onCreate(SQLiteDatabase db) {
         String drop = "drop table if exists " + table_name + ";";
         db.execSQL(drop);
-        String create = "create table if not exists " + table_name + "("
-                + "_id integer primary key autoincrement not null,"
-                + "Gname varchar," + "price float," + "desc varchar,"
-                + "salenum integer" + ")";
+        String create =String.format("create table if not exists %s(" +
+                "_id integer primary key autoincrement not null," +
+                "gname varchar,price float,desc varchar,salenum integer," +
+                "type varchar,image varchar,weight varchar," +
+                "taste varchar)",table_name);
         db.execSQL(create);
     }
 
@@ -80,103 +81,97 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
     }
 
     @Override
-    public int delete(String name) {
-        openReadLink();
-        return mDB.delete(table_name, name, null);
+    public boolean insert(Goods goods) {
+        openWriteLink();
+        ContentValues cv=new ContentValues();
+        cv.put("gname",goods.Gname);
+        cv.put("price",goods.price);
+        cv.put("desc",goods.desc);
+        cv.put("weight",goods.weight);
+        cv.put("type",goods.type);
+        cv.put("image",goods.image);
+        cv.put("taste",goods.taste);
+        cv.put("salenum",0);
+//        String sql="insert into goods(gname,price,desc,type,image,weight,taste,salenum) values (?,?,?,?,?,?,?,?)";
+//        mDB.execSQL(sql,new Object[]{goods.Gname,goods.price,goods.desc,goods.type,goods.image,goods.weight,goods.taste,goods.salenum});
+        return mDB.insert(table_name,null,cv)>0;
+        //成功返回行号，失败返回-1
     }
 
-    //返回-1为该商品已存在
     @Override
-    public long insert(List<Goods> goods) {
-        long reault = -1;
+    public boolean delete(String condition) {
+        openWriteLink();
+        openReadLink();
+        //删除  返回删除记录的条数
+//        String sql="delete from goods where gname=?";
+//        mDB.execSQL(sql,new Object[]{condition});
+//        flag=mDB.delete(table_name,condition,null);
+        return mDB.delete(table_name,"gname=?",new String[]{condition})>0;
+    }
+    @Override
+    public boolean update(Goods item, String name) {
+        openWriteLink();
+        int flag=0;
+        ContentValues cv=new ContentValues();
+        cv.put("gname",item.Gname);
+        cv.put("price",item.price);
+        cv.put("desc",item.desc);
+        cv.put("salenum",item.salenum);
+        cv.put("type",item.type);
+        cv.put("image",item.image);
+        cv.put("weight",item.weight);
+        cv.put("taste",item.taste);
+
+        return mDB.update(table_name,cv,"gname=?",new String[]{name})>0;
+//        String sql="update goods set price=?,desc=?,type=?,image=?,weight=?,taste=?) where gname=?";
+//        mDB.execSQL(sql,new Object[]{item.price,item.desc,item.type,item.image,item.weight,item.taste,item.Gname});
+//        flag=mDB.update(table_name,cv,name,null);
+    }
+
+    @Override
+    public List<Goods> queryAll() {
         openReadLink();
         openWriteLink();
-        for (int i = 0; i < goods.size(); i++) {
-            Goods item = goods.get(i);
-            List<Goods> lists = new ArrayList<>();
-            if (item.getGname() != null) {
-                String name = String.format("Gname=%s", item.getGname());
-                lists = query(name);
-                if (lists.size() > 0) {
-                    update(item, name);
-                    reault = lists.get(0).rowid;
-                    continue;
-                }
-            }
-            ContentValues cv = new ContentValues();
-            cv.put("Gid", item.getGid());
-            cv.put("Gname", item.getGname());
-            cv.put("price", item.getPrice());
-            cv.put("desc", item.getDesc());
-            cv.put("salenum", item.getSalenum());
-            reault = mDB.insert(table_name, "", cv);
-            if (reault == -1) {
-                return reault;
-            }
+        List<Goods> list=new ArrayList<>();
+//        String sql=String.format("select _id,gname,price,desc,salenum,type,image,weight,taste from %s",table_name);
+        Cursor cursor=mDB.query(table_name,null,null,null,null,null,null);
+        if (cursor!=null){
+            while (cursor.moveToNext()){
+                Goods good=new Goods();
+                good.Gid=cursor.getInt(cursor.getColumnIndex("_id"));
+                good.Gname=cursor.getString(cursor.getColumnIndex("gname"));
+                good.price=cursor.getDouble(cursor.getColumnIndex("price"));
+                good.desc=cursor.getString(cursor.getColumnIndex("desc"));
+                good.salenum=cursor.getInt(cursor.getColumnIndex("salenum"));
+                good.type=cursor.getString(cursor.getColumnIndex("type"));
+                good.image =cursor.getString(cursor.getColumnIndex("image"));
+                good.weight=cursor.getString(cursor.getColumnIndex("weight"));
+                good.taste=cursor.getString(cursor.getColumnIndex("taste"));
+                list.add(good);
+            }cursor.close();
         }
-        return reault;
-    }
-
-    @Override
-    public int update(Goods goods, String name) {
-        openWriteLink();
-        ContentValues cv = new ContentValues();
-        cv.put("Gname", goods.getGname());
-        cv.put("price", goods.getPrice());
-        cv.put("desc", goods.getDesc());
-        cv.put("salenum", goods.getSalenum());
-        return mDB.update(table_name, cv, name, null);
-    }
-
-    @Override
-    public List<Goods> query(String... name) {
-        openReadLink();
-        String sql = String.format("select goods(rowid,_id,Gname,price,desc,salenum) " +
-                "from %s where %s;", table_name, name);
-        if (name==null){
-            sql="select * from "+table_name;
-        }
-        List<Goods> list = new ArrayList<>();
-        Cursor cursor = mDB.rawQuery(sql, null);
-        //取出记录
-        while (cursor.moveToNext()) {
-            Goods goods = new Goods();
-            goods.rowid = cursor.getInt(0);
-            goods.setGid(cursor.getInt(1));
-            goods.setGname(cursor.getString(2));
-            goods.setPrice(cursor.getDouble(3));
-            goods.setDesc(cursor.getString(4));
-            goods.setSalenum(cursor.getInt(5));
-            list.add(goods);
-        }
-        cursor.close();
-        return list;
-    }
-
-    public List<Goods> queryOrder4(){
-        openReadLink();
-        String sql="select * from goods order by salenum DESC LIMIT 0,4";
-        List<Goods> list = new ArrayList<>();
-        Cursor cursor = mDB.rawQuery(sql, null);
-        //取出记录
-        while (cursor.moveToNext()) {
-            Goods goods = new Goods();
-            goods.setGid(cursor.getInt(1));
-            goods.setGname(cursor.getString(2));
-            goods.setPrice(cursor.getDouble(3));
-            goods.setSalenum(cursor.getInt(5));
-            list.add(goods);
-        }
-        cursor.close();
         return list;
     }
 
     @Override
-    public Goods queryBy(String name) {
+    public List<Goods> queryBy(String conditon) {
         openReadLink();
-        Goods goods = null;
-        List<Goods> goodsList = query(String.format("Gname=%s", name));
-        goods = goodsList.get(0);
-        return goods;
+        openWriteLink();
+        List<Goods> list=new ArrayList<>();
+        Cursor cursor=mDB.query(table_name,null,"gname=?",new String[]{conditon},null,null,null);
+        if (cursor!=null){
+            Goods good=new Goods();
+            good.Gid=cursor.getInt(cursor.getColumnIndex("rowid"));
+            good.Gname=cursor.getString(cursor.getColumnIndex("gname"));
+            good.price=cursor.getDouble(cursor.getColumnIndex("price"));
+            good.desc=cursor.getString(cursor.getColumnIndex("desc"));
+            good.salenum=cursor.getInt(cursor.getColumnIndex("salename"));
+            good.type=cursor.getString(cursor.getColumnIndex("type"));
+            good.image =cursor.getString(cursor.getColumnIndex("image"));
+            good.weight=cursor.getString(cursor.getColumnIndex("weight"));
+            good.taste=cursor.getString(cursor.getColumnIndex("taste"));
+            list.add(good);
+        }
+        return list;
     }
 }

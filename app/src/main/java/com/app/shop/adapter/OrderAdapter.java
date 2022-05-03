@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,7 +19,6 @@ import java.util.List;
  * create by 呵呵 on 2022/3/23.
  */
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHolder> {
-
     private Context context;
     private List<Orders> data;
 
@@ -43,10 +43,19 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHol
     public void onBindViewHolder(@NonNull orderViewHolder holder, int position) {
         Orders order = data.get(position);
         holder.name.setText("顾客  "+position);//通过user表查询
-        holder.time.setText(order.getDate());
-        holder.foods.setText(order.getFoods());
-        holder.level.setText(order.getLevel()+"");
-        holder.price.setText(order.getSumPrice()+"");
+        holder.time.setText(order.date);
+        holder.foods.setText(order.foods);
+        holder.level.setRating((float) order.level);
+        holder.price.setText(order.sumPrice+"");
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (clickListener!=null){
+                    clickListener.onItemClick(view, holder.getAdapterPosition(), data.get(holder.getAdapterPosition()));
+                }
+            }
+        });
     }
 
     @Override
@@ -55,31 +64,23 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHol
     }
 
     public class orderViewHolder extends RecyclerView.ViewHolder {
-        private TextView name, time, foods, level,price;
+        private TextView name, time, foods,price;
+        private RatingBar level;
 
         public orderViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.order_name);
-            time = itemView.findViewById(R.id.order_time);
+            time = itemView.findViewById(R.id.order_data);
             foods = itemView.findViewById(R.id.order_foods);
             level = itemView.findViewById(R.id.order_level);
             price = itemView.findViewById(R.id.order_price);
-            //点击事件
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (clickListener!=null){
-                        clickListener.onItemClick(getAdapterPosition());
-                    }
-                }
-            });
         }
     }
-    private onOrdersItemClickListener clickListener;
-    public void setOnOrdersItemClickListener(onOrdersItemClickListener listener){
+    private OnOrdersItemClickListener clickListener;
+    public void setOnOrdersItemClickListener(OnOrdersItemClickListener listener){
         clickListener=listener;
     };
-    public interface onOrdersItemClickListener{
-        void onItemClick(int position);
+    public interface OnOrdersItemClickListener {
+        void onItemClick(View view,int position,Orders order);
     }
 }
