@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ui.activity.AddGoodsActivity">
+    android:orientation="vertical">
 
     <include layout="@layout/common_toolbar" />
 
@@ -145,7 +144,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:background="@drawable/button_bg_black"
-            android:text="确认添加"
-            android:textSize="20dp" />
+            android:text="确    认"
+            android:textSize="20dp"
+            android:textColor="#D7BCB9B9"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,11 @@
 package com.app.shop.model;
 
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import com.app.shop.sql.helper.OrdersDBHelper;
 import com.app.shop.sql.table.Orders;
+import com.app.shop.ui.framents.OrderFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +21,14 @@ public class OrderModel implements IOrderModel{
     }
 
     private List<Orders> getData(){
-        List<Orders> ordersList=new ArrayList<>();
-        for (int i = 20; i > 0; i--) {
-            Orders order=new Orders();
-            order.date="yyyy-MM-dd hh:mm";
-            order.foods="ncksjbvkabs";
-            order.level=4;
-            order.sumPrice=1234.445;
-            ordersList.add(order);
+        OrdersDBHelper helper=OrdersDBHelper.getInstance(OrderFragment.context);
+        try {
+            helper.openWriteLink();
+        }catch (Exception e){
+            e.getMessage();
+            e.printStackTrace();
         }
+        List<Orders> ordersList=helper.queryAll();
         return ordersList;
     }
 }

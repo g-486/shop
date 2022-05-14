@@ -29,6 +29,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
     private TextView to_refound;
     private CheckBox remember;
     private Intent intent;
+    private TextView loginIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
         ed_pass = findViewById(R.id.login_pass);
         ed_user = findViewById(R.id.login_user);
         login = findViewById(R.id.login_on);
+        loginIn = findViewById(R.id.login_in);
         to_register = findViewById(R.id.to_register);
         to_refound = findViewById(R.id.to_refound);
         remember = findViewById(R.id.login_remember);
@@ -58,6 +60,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
 
     private void event() {
         login.setOnClickListener(this);
+        loginIn.setOnClickListener(this);
         to_register.setOnClickListener(this);
         to_refound.setOnClickListener(this);
         remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -72,6 +75,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.login_on:
                 onLogin();
+                finish();
                 break;
             case R.id.to_register:
                 intent = new Intent(this, RegisterActivity.class);
@@ -80,6 +84,12 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
             case R.id.to_refound:
                 intent = new Intent(this, RefoundActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.login_in:
+                SharedPreferencesUtils.setSignState(this,false);
+                intent=new Intent(this,MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
@@ -95,7 +105,6 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
             SharedPreferencesUtils.setSignState(this,true);
             intent=new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
-
         }else {
             ToastUtils.shortToast(LoginActivity.this,"账号或密码错误，请重新输入！");
         }

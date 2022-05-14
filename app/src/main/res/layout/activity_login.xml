@@ -47,14 +47,29 @@
             android:paddingLeft="10dp"
             android:textColor="#000000"
             android:paddingStart="10dp" />
-        <Button
-            android:id="@+id/login_on"
-            android:layout_width="180dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="30dp"
-            android:text="登录"
-            style="@style/button_large_black"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/login_on"
+                android:layout_width="180dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:text="登录"
+                style="@style/button_large_black"/>
+            <TextView
+                android:id="@+id/login_in"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_marginRight="@dimen/dp_20"
+                android:padding="@dimen/dp_5"
+                android:text="游客登录"
+                android:textColor="#00BCD4"
+                android:textSize="12dp"/>
+
+        </FrameLayout>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

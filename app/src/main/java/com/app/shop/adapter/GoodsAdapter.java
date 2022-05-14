@@ -45,18 +45,18 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsHodler>
 
     @Override
     public void onBindViewHolder(@NonNull GoodsHodler holder, int position) {
-        String path = data.get(position).image;
+        String path = data.get(position).getImage();
         if (path != null && !path.equals("")) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             holder.icon.setImageBitmap(bitmap);
         } else {
             //使用默认的图片
-            holder.icon.setImageResource(R.mipmap.ic_launcher);
+            holder.icon.setImageResource(R.drawable.ic_food);
         }
-        holder.name.setText(data.get(position).Gname);
-        holder.desc.setText(data.get(position).desc);
-        holder.price.setText(String.valueOf(data.get(position).price));
-        holder.num.setText(String.valueOf(data.get(position).salenum));
+        holder.name.setText(data.get(position).getGname());
+        holder.desc.setText(data.get(position).getDesc());
+        holder.price.setText(String.valueOf(data.get(position).getPrice()));
+        holder.num.setText(String.valueOf(data.get(position).getSalenum()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

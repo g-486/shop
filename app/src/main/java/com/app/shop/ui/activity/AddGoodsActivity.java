@@ -137,17 +137,21 @@ public class AddGoodsActivity extends BarActivity {
 
     private void getData() {
         Goods goods = new Goods();
-        goods.Gname = goodname.getText().toString()+"";
-        goods.desc = gooddesc.getText().toString()+"";
-        goods.price = Double.parseDouble(goodprice.getText().toString());
-        goods.taste=goodtaste.getText().toString()+"";
-        goods.weight=goodweight.getText().toString()+"";
-        goods.type=goodtype.getText().toString()+"";
-        goods.image=saveImage(imagePath,goods.Gname)+"";
-        GoodsDBHelper helper = GoodsDBHelper.getInstance(this, 1);
-        if (helper.insert(goods)) {
-            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
-        } else Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
+        goods.setGname(goodname.getText().toString()+"");
+        goods.setDesc( gooddesc.getText().toString()+"");
+        goods.setPrice( Double.parseDouble(goodprice.getText().toString()));
+        goods.setTaste(goodtaste.getText().toString()+"");
+        goods.setWeight(goodweight.getText().toString()+"");
+        goods.setType(goodtype.getText().toString()+"");
+        goods.setImage(saveImage(imagePath,goods.getGname())+"");
+        GoodsDBHelper helper = GoodsDBHelper.getInstance(this);
+        try {
+            if (helper.insert(goods)) Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+             else Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            e.printStackTrace();
+            e.getMessage();
+        }
         goodname.setText("");
         gooddesc.setText("");
         goodprice.setText("");
@@ -172,6 +176,7 @@ public class AddGoodsActivity extends BarActivity {
         window.setWindowAnimations(R.style.Bottom_popUpWindow);
         //设置对话框大小
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
         dialog.show();
 
         Button btn_album = dialog.findViewById(R.id.btn_pop_album);
@@ -310,6 +315,7 @@ public class AddGoodsActivity extends BarActivity {
     }
 
     private String saveImage(String imagePath,String name){
+        if (name==null)return "";
         String path=saveImagePath+name+".jpg";
         try {
             File img=new File(imagePath);

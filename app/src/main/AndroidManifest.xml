@@ -7,16 +7,31 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />  <!--相机权限-->
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_icon"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shop">
+        <activity android:name=".ui.activity.DataAnalyActivity"/>
+        <activity
+            android:name=".ui.activity.ReadOrderActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.OtherSetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.AdduserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.AddsayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.AddorderActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.SplashActivity"
             android:exported="true">
@@ -28,7 +43,7 @@
         </activity>
         <activity
             android:name=".ui.activity.ResetGoodActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".ui.activity.AddGoodsActivity"
             android:exported="true" />
@@ -44,9 +59,7 @@
         <activity
             android:name=".ui.activity.RefoundActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.activity.SettingActivity"
-            android:exported="false"/>
+        <activity android:name=".ui.activity.AboutActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

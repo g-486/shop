@@ -3,7 +3,9 @@ package com.app.shop.ui.activity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -12,10 +14,12 @@ import android.widget.LinearLayout;
 import com.app.shop.R;
 import com.app.shop.adapter.TabPagerAdapter;
 import com.app.shop.base.BaseActivity;
+import com.app.shop.sql.helper.BaseDBHelper;
 import com.app.shop.ui.framents.HomeFragment;
 import com.app.shop.ui.framents.MineFragment;
 import com.app.shop.ui.framents.OrderFragment;
 import com.app.shop.utils.SharedPreferencesUtils;
+import com.app.shop.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +36,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(getLayoutId());
+        BaseDBHelper helper=new BaseDBHelper(MainActivity.this);
+        helper.getReadableDatabase();
+        helper.getWritableDatabase();
 //        sign=SharedPreferencesUtils.getSignState(this);
         initView();
         initPager();
+    }
+
+    private long touchTime=0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode==KeyEvent.KEYCODE_BACK&&event.getAction()==KeyEvent.ACTION_DOWN){
+            if((System.currentTimeMillis()-touchTime)>3000){
+                ToastUtils.shortToast(getApplicationContext(),"再按一次退出程序");
+                touchTime=System.currentTimeMillis();
+            }else{
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -100,6 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             case 0:
                 ivhome.setSelected(true);
                 ivCurrent = ivhome;
+
                 break;
             case R.id.ll_order:
                 viewPager.setCurrentItem(1);

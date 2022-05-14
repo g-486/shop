@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.Button;
 
 import com.app.shop.R;
+import com.app.shop.utils.SharedPreferencesUtils;
 
 public class SplashActivity extends BarActivity {
 
     private Button jump;
-    private final Handler handler=new Handler();
+    private final Handler handler = new Handler();
 
-    private final Runnable runnable=new Runnable() {
+    private final Runnable runnable = new Runnable() {
         @Override
         public void run() {
             toNextActivity();
@@ -27,9 +28,10 @@ public class SplashActivity extends BarActivity {
 
         init();
         event();
-        handler.postDelayed(runnable,3000);
+        handler.postDelayed(runnable, 3000);
     }
-    private void event(){
+
+    private void event() {
         jump.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -38,17 +40,24 @@ public class SplashActivity extends BarActivity {
             }
         });
     }
-    private void init(){
-        jump=findViewById(R.id.splash_jump);
+
+    private void init() {
+        jump = findViewById(R.id.splash_jump);
     }
-    private void toNextActivity(){
-        Intent intent=new Intent(this,MainActivity.class);
+
+    private void toNextActivity() {
+        Intent intent;
+        boolean b = SharedPreferencesUtils.getSignState(this);
+        if (b) intent = new Intent(this, MainActivity.class);
+        else intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         handler.removeCallbacks(runnable);
+
     }
 }

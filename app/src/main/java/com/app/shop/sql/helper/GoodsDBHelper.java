@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import androidx.annotation.Nullable;
+
 import com.app.shop.sql.Dao.GoodsDao;
 import com.app.shop.sql.table.Goods;
 
@@ -21,24 +23,17 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
     private static GoodsDBHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
-    private GoodsDBHelper(Context context) {
-        super(context, DBname, null, DB_VERSION);
+    public GoodsDBHelper(@Nullable Context context) {
+        super(context);
     }
 
-    private GoodsDBHelper(Context context, int version) {
-        super(context, DBname, null, version);
-    }
-
-    public static GoodsDBHelper getInstance(Context context, int version) {
-        if (mHelper == null && version > 0) {
-            mHelper = new GoodsDBHelper(context, version);
-        } else if (mHelper == null) {
-            mHelper = new GoodsDBHelper(context);
+    public static GoodsDBHelper getInstance(Context context) {
+        if (mHelper == null) {
+            mHelper=new GoodsDBHelper(context);
         }
         return mHelper;
     }
 
-    @Override
     public void closeLink() {
         if (mDB.isOpen()) {
             mDB.close();
@@ -48,32 +43,28 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
         }
     }
 
-    @Override
-    public SQLiteDatabase openReadLink() {
+    public void openReadLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getReadableDatabase();
         }
-        return mDB;
     }
 
-    @Override
-    public SQLiteDatabase openWriteLink() {
+    public void openWriteLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getWritableDatabase();
         }
-        return mDB;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String drop = "drop table if exists " + table_name + ";";
-        db.execSQL(drop);
-        String create =String.format("create table if not exists %s(" +
-                "_id integer primary key autoincrement not null," +
-                "gname varchar,price float,desc varchar,salenum integer," +
-                "type varchar,image varchar,weight varchar," +
-                "taste varchar)",table_name);
-        db.execSQL(create);
+//        String drop =String.format("drop table if exists %s;",table_name);
+//        db.execSQL(drop);
+//        String create =String.format("create table if not exists %s(" +
+//                "_id integer primary key autoincrement not null," +
+//                "gname varchar,price float,desc varchar,salenum integer," +
+//                "type varchar,image varchar,weight varchar," +
+//                "taste varchar)",table_name);
+//        db.execSQL(create);
     }
 
     @Override
@@ -84,13 +75,13 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
     public boolean insert(Goods goods) {
         openWriteLink();
         ContentValues cv=new ContentValues();
-        cv.put("gname",goods.Gname);
-        cv.put("price",goods.price);
-        cv.put("desc",goods.desc);
-        cv.put("weight",goods.weight);
-        cv.put("type",goods.type);
-        cv.put("image",goods.image);
-        cv.put("taste",goods.taste);
+        cv.put("gname",goods.getGname());
+        cv.put("price",goods.getPrice());
+        cv.put("desc",goods.getDesc());
+        cv.put("weight",goods.getWeight());
+        cv.put("type",goods.getType());
+        cv.put("image",goods.getImage());
+        cv.put("taste",goods.getTaste());
         cv.put("salenum",0);
 //        String sql="insert into goods(gname,price,desc,type,image,weight,taste,salenum) values (?,?,?,?,?,?,?,?)";
 //        mDB.execSQL(sql,new Object[]{goods.Gname,goods.price,goods.desc,goods.type,goods.image,goods.weight,goods.taste,goods.salenum});
@@ -113,14 +104,14 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
         openWriteLink();
         int flag=0;
         ContentValues cv=new ContentValues();
-        cv.put("gname",item.Gname);
-        cv.put("price",item.price);
-        cv.put("desc",item.desc);
-        cv.put("salenum",item.salenum);
-        cv.put("type",item.type);
-        cv.put("image",item.image);
-        cv.put("weight",item.weight);
-        cv.put("taste",item.taste);
+        cv.put("gname",item.getGname());
+        cv.put("price",item.getPrice());
+        cv.put("desc",item.getDesc());
+        cv.put("salenum",item.getSalenum());
+        cv.put("type",item.getType());
+        cv.put("image",item.getImage());
+        cv.put("weight",item.getWeight());
+        cv.put("taste",item.getTaste());
 
         return mDB.update(table_name,cv,"gname=?",new String[]{name})>0;
 //        String sql="update goods set price=?,desc=?,type=?,image=?,weight=?,taste=?) where gname=?";
@@ -138,15 +129,15 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
         if (cursor!=null){
             while (cursor.moveToNext()){
                 Goods good=new Goods();
-                good.Gid=cursor.getInt(cursor.getColumnIndex("_id"));
-                good.Gname=cursor.getString(cursor.getColumnIndex("gname"));
-                good.price=cursor.getDouble(cursor.getColumnIndex("price"));
-                good.desc=cursor.getString(cursor.getColumnIndex("desc"));
-                good.salenum=cursor.getInt(cursor.getColumnIndex("salenum"));
-                good.type=cursor.getString(cursor.getColumnIndex("type"));
-                good.image =cursor.getString(cursor.getColumnIndex("image"));
-                good.weight=cursor.getString(cursor.getColumnIndex("weight"));
-                good.taste=cursor.getString(cursor.getColumnIndex("taste"));
+                good.setGid(cursor.getInt(cursor.getColumnIndex("_id")));
+                good.setGname(cursor.getString(cursor.getColumnIndex("gname")));
+                good.setPrice(cursor.getDouble(cursor.getColumnIndex("price")));
+                good.setDesc(cursor.getString(cursor.getColumnIndex("desc")));
+                good.setSalenum(cursor.getInt(cursor.getColumnIndex("salenum")));
+                good.setType(cursor.getString(cursor.getColumnIndex("type")));
+                good.setImage(cursor.getString(cursor.getColumnIndex("image")));
+                good.setWeight(cursor.getString(cursor.getColumnIndex("weight")));
+                good.setTaste(cursor.getString(cursor.getColumnIndex("taste")));
                 list.add(good);
             }cursor.close();
         }
@@ -161,15 +152,15 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
         Cursor cursor=mDB.query(table_name,null,"gname=?",new String[]{conditon},null,null,null);
         if (cursor!=null){
             Goods good=new Goods();
-            good.Gid=cursor.getInt(cursor.getColumnIndex("rowid"));
-            good.Gname=cursor.getString(cursor.getColumnIndex("gname"));
-            good.price=cursor.getDouble(cursor.getColumnIndex("price"));
-            good.desc=cursor.getString(cursor.getColumnIndex("desc"));
-            good.salenum=cursor.getInt(cursor.getColumnIndex("salename"));
-            good.type=cursor.getString(cursor.getColumnIndex("type"));
-            good.image =cursor.getString(cursor.getColumnIndex("image"));
-            good.weight=cursor.getString(cursor.getColumnIndex("weight"));
-            good.taste=cursor.getString(cursor.getColumnIndex("taste"));
+            good.setGid(cursor.getInt(cursor.getColumnIndex("_id")));
+            good.setGname(cursor.getString(cursor.getColumnIndex("gname")));
+            good.setPrice(cursor.getDouble(cursor.getColumnIndex("price")));
+            good.setDesc(cursor.getString(cursor.getColumnIndex("desc")));
+            good.setSalenum(cursor.getInt(cursor.getColumnIndex("salenum")));
+            good.setType(cursor.getString(cursor.getColumnIndex("type")));
+            good.setImage(cursor.getString(cursor.getColumnIndex("image")));
+            good.setWeight(cursor.getString(cursor.getColumnIndex("weight")));
+            good.setTaste(cursor.getString(cursor.getColumnIndex("taste")));
             list.add(good);
         }
         return list;

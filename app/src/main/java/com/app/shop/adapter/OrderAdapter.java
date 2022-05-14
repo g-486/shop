@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.shop.R;
+import com.app.shop.sql.helper.UserDBHelper;
 import com.app.shop.sql.table.Orders;
 
 import java.util.List;
@@ -21,10 +22,13 @@ import java.util.List;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHolder> {
     private Context context;
     private List<Orders> data;
+    private UserDBHelper helper;
+    private String str;
 
     public OrderAdapter(Context context, List<Orders> date) {
         this.context = context;
         this.data = date;
+        helper = UserDBHelper.getInstance(context);
     }
     public void setData(List<Orders> data) {
         this.data.clear();
@@ -42,11 +46,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHol
     @Override
     public void onBindViewHolder(@NonNull orderViewHolder holder, int position) {
         Orders order = data.get(position);
-        holder.name.setText("顾客  "+position);//通过user表查询
-        holder.time.setText(order.date);
-        holder.foods.setText(order.foods);
-        holder.level.setRating((float) order.level);
-        holder.price.setText(order.sumPrice+"");
+        str = helper.findById(order.getUid()+"").getUname();
+        holder.name.setText(str);//通过user表查询
+        str = order.getDate()+"";
+        holder.time.setText(str.substring(0,4)+"-"+str.substring(4,6)+"-"+str.substring(6,8)+" "+str.substring(8,10)+":"+str.substring(10));
+        holder.foods.setText(order.getFoods());
+        holder.level.setRating((float) order.getLevel());
+        holder.price.setText(order.getSumPrice()+"");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

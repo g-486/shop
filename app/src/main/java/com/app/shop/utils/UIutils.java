@@ -1,6 +1,8 @@
 package com.app.shop.utils;
 
 import android.content.Context;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * create by 呵呵 on 2022/4/30.

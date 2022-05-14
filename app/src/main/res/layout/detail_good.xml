@@ -136,7 +136,9 @@
             android:gravity="center"
             android:text="顾客评论"
             android:textSize="20dp" />
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_say"
             android:layout_width="match_parent"

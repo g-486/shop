@@ -1,5 +1,6 @@
 package com.app.shop.ui.framents;
 
+import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.app.shop.base.BaseFragment;
 import com.app.shop.databinding.FragmentOrderBinding;
 import com.app.shop.presenter.OrderPresenter;
 import com.app.shop.sql.helper.GoodsDBHelper;
+import com.app.shop.sql.helper.OrdersDBHelper;
 import com.app.shop.sql.helper.SayDBHelper;
 import com.app.shop.sql.table.Goods;
 import com.app.shop.sql.table.Orders;
@@ -48,11 +50,12 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
     private static boolean sign;
 
     private View view;
-    public static FragmentActivity context;
+    public static Context context;
 
     private List<Goods> saleup = new ArrayList<>();  //按salenum 排序
     private LinearLayoutManager orderManager;
     private OrderAdapter orderAdapter;
+    private SaleupAdapter saleupAdapter;
 
     public static OrderFragment newInstance() {
         OrderFragment fragment = new OrderFragment();
@@ -94,7 +97,7 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
     @Override
     public void onResume() {
         super.onResume();
-        presenter.fatch();
+        refreshData();
     }
 
     @Override
@@ -109,9 +112,9 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
 
     private void initevent() {
         if (sign) {
-            getData();
+            saleup=getGoods();
             LinearLayoutManager saleUpManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
-            SaleupAdapter saleupAdapter = new SaleupAdapter(saleup, context);
+            saleupAdapter = new SaleupAdapter(saleup, context);
             binding.goodSaleup.setLayoutManager(saleUpManager);
             binding.goodSaleup.setAdapter(saleupAdapter);
             saleupAdapter.setOnGoodsItemClickListener(new SaleupAdapter.onGoodsItemClickListener() {
@@ -126,18 +129,18 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
                     window.update();
                     window.showAtLocation(binding.orderRecycler, Gravity.BOTTOM, 0, UIutils.dip2px(getActivity(), 59));
                     TextView name = v.findViewById(R.id.tv_good_name);
-                    name.setText(good.Gname);
+                    name.setText(good.getGname());
                     ImageView img = v.findViewById(R.id.iv_good_img);
-                    img.setImageBitmap(BitmapFactory.decodeFile(good.image));
+                    img.setImageBitmap(BitmapFactory.decodeFile(good.getImage()));
                     TextView num = v.findViewById(R.id.tv_good_salenum);
-                    num.setText(good.salenum + "");
+                    num.setText(good.getSalenum() + "");
                     TextView taste = v.findViewById(R.id.tv_good_taste);
-                    taste.setText(good.taste);
+                    taste.setText(good.getTaste());
                     TextView desc = v.findViewById(R.id.tv_good_desc);
-                    desc.setText(good.desc);
+                    desc.setText(good.getDesc());
                     RecyclerView rvSay = v.findViewById(R.id.rv_say);
                     //评论展示
-                    SayDBHelper sayDBHelper = SayDBHelper.getInstance(getActivity(), 1);
+                    SayDBHelper sayDBHelper = SayDBHelper.getInstance(getActivity());
                     List<Say> says = new ArrayList<>();
 //                if (sayDBHelper.findByGood(good.Gid)!=null){
 //                    Log.e("tag","null");
@@ -154,10 +157,11 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
         } else ToastUtils.shortToast(context, "请检查是否成功登录");
     }
 
-    private void getData() {
-        GoodsDBHelper helper = GoodsDBHelper.getInstance(getActivity(), 1);
+    private List<Goods> getGoods() {
+        GoodsDBHelper helper = GoodsDBHelper.getInstance(getActivity());
         saleup = helper.queryAll();
         helper.closeLink();
+        return saleup;
     }
 
     @Override
@@ -184,8 +188,30 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
                 }
             });
         }else {
-
             ToastUtils.shortToast(context, "请检查是否成功登录");
         }
     }
+    private void refreshData() {
+        saleup = getGoods();
+        if (saleup.size() == 0) {
+            binding.tvNoData.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvNoData.setVisibility(View.GONE);
+        }
+        if (saleupAdapter != null) {
+            saleupAdapter.setData(saleup);
+        }
+
+        List<Orders> ordersList=new ArrayList<>();
+        OrdersDBHelper helper=OrdersDBHelper.getInstance(getActivity());
+        helper.openReadLink();
+        ordersList=helper.queryAll();
+        if (ordersList.size()==0||ordersList==null){
+            binding.tvNoOrder.setVisibility(View.VISIBLE);
+        }else binding.tvNoOrder.setVisibility(View.GONE);
+        if (orderAdapter!=null){
+            orderAdapter.setData(ordersList);
+        }
+    }
+
 }

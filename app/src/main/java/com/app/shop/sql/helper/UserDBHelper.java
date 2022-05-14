@@ -2,7 +2,10 @@ package com.app.shop.sql.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import androidx.annotation.Nullable;
 
 import com.app.shop.sql.Dao.UserDao;
 import com.app.shop.sql.table.User;
@@ -19,24 +22,17 @@ public class UserDBHelper extends BaseDBHelper implements UserDao {
     private static UserDBHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
-    public UserDBHelper(Context context, int version) {
-        super(context, DBname, null, version);
+    public UserDBHelper(@Nullable Context context) {
+        super(context);
     }
 
-    public UserDBHelper(Context context) {
-        super(context, DBname, null, DB_VERSION);
-    }
-
-    public static UserDBHelper getInstance(Context context, int version) {
-        if (mHelper == null && version > 0) {
-            mHelper = new UserDBHelper(context, version);
-        } else if (mHelper == null) {
+    public static UserDBHelper getInstance(Context context) {
+        if (mHelper == null) {
             mHelper = new UserDBHelper(context);
         }
         return mHelper;
     }
 
-    @Override
     public void closeLink() {
         if (mDB.isOpen()) {
             mDB.close();
@@ -46,30 +42,26 @@ public class UserDBHelper extends BaseDBHelper implements UserDao {
         }
     }
 
-    @Override
-    public SQLiteDatabase openReadLink() {
+    public void openReadLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getReadableDatabase();
         }
-        return mDB;
     }
 
-    @Override
-    public SQLiteDatabase openWriteLink() {
+    public void openWriteLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getWritableDatabase();
         }
-        return mDB;
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String drop = "drop table if exists " + table_name + ";";
-        sqLiteDatabase.execSQL(drop);
-        String create = "create table if not exists " + table_name + "(" +
-                "_id integer primary key autoincrement not null,"
-                + "Uname varcher)";
-        sqLiteDatabase.execSQL(create);
+//        String drop = "drop table if exists " + table_name + ";";
+//        sqLiteDatabase.execSQL(drop);
+//        String create = "create table if not exists " + table_name + "(" +
+//                "_id integer primary key autoincrement not null,"
+//                + "uname varcher)";
+//        sqLiteDatabase.execSQL(create);
     }
 
     @Override
@@ -80,8 +72,7 @@ public class UserDBHelper extends BaseDBHelper implements UserDao {
     public boolean insert(User user) {
         openWriteLink();
         ContentValues cv=new ContentValues();
-        cv.put("name",user.Uname);
-
+        cv.put("uname",user.getUname());
         return mDB.insert(table_name,null,cv)>0;
     }
 
@@ -103,5 +94,28 @@ public class UserDBHelper extends BaseDBHelper implements UserDao {
     @Override
     public List<User> queryBy(String conditon) {
         return null;
+    }
+
+    public User findById(String id){
+        openReadLink();
+        User user=new User();
+        Cursor cursor=mDB.query(table_name,null,"_id=?",new String[]{id},null,null,null);
+        if (cursor!=null){
+            cursor.moveToNext();
+            user.setUname(cursor.getString(cursor.getColumnIndex("uname")));
+            user.setUid(cursor.getInt(cursor.getColumnIndex("_id")));
+        }
+        return user;
+    }
+    public User findByName(String name){
+        openReadLink();
+        User user=new User();
+        Cursor cursor=mDB.query(table_name,null,"uname=?",new String[]{name},null,null,null);
+        if (cursor!=null){
+            cursor.moveToNext();
+            user.setUname(cursor.getString(cursor.getColumnIndex("uname")));
+            user.setUid(cursor.getInt(cursor.getColumnIndex("_id")));
+        }
+        return user;
     }
 }

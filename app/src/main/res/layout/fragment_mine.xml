@@ -7,16 +7,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:background="#FAF9E8"
         android:orientation="vertical">
         <View
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@color/white"/>
+            android:background="@color/white"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="#FAF9E8">
 
             <ImageView
                 android:id="@+id/mine_head"
@@ -57,54 +58,61 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
                 <TextView
                     android:id="@+id/tv_good_add"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="添加商品"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/white"/>
+                    android:background="#FFEB3B"/>
+                />
                 <TextView
                     android:id="@+id/tv_good_del"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="删除商品"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/white"/>
+                    android:background="#FFEB3B"/>
+                />
                 <TextView
                     android:id="@+id/tv_good_re"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="修改商品信息"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/white"/>
+                    android:background="#FFEB3B"/>
+                />
                 <TextView
                     android:id="@+id/tv_good_look"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="查看全部商品"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -115,33 +123,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
                 <TextView
                     android:id="@+id/tv_order_look"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="查看订单"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/white"/>
+                    android:background="#FFEB3B"/>
+                />
                 <TextView
                     android:id="@+id/tv_order_chose"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="订单筛选"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
+                />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/white"/>
+                android:layout_height="10dp"/>
             <!--数据统计-->
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,43 +167,104 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="数据统计"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
+                />
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/white"/>
+                android:layout_height="10dp" />
             <!--个性设置-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
                 <TextView
                     android:id="@+id/tv_set_other"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="其他设置"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="@color/white"/>
+                    android:background="#FFEB3B"/>
                 <TextView
                     android:id="@+id/tv_about"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:gravity="center"
-                    android:background="@drawable/gray_btn"
                     android:text="关于"
                     android:textSize="@dimen/dp_20"
                     android:textColor="#B0000000"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
             </LinearLayout>
+         <!--   <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/white"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_out"
+                    android:layout_width="120dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/red_btn"
+                    android:text="退出登录"
+                    android:textSize="@dimen/dp_20"
+                    android:textColor="#B0000000"/>
+            </LinearLayout>-->
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/add_order"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_5"
+                android:layout_marginLeft="30dp"
+                android:text="添加订单"
+                android:textSize="@dimen/dp_20"/>
+            <TextView
+                android:id="@+id/add_say"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:padding="@dimen/dp_5"
+                android:text="添加评论"
+                android:textSize="@dimen/dp_20"/>
+            <TextView
+                android:id="@+id/add_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:padding="@dimen/dp_5"
+                android:text="添加用户"
+                android:textSize="@dimen/dp_20"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

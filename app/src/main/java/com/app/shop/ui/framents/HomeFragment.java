@@ -46,10 +46,11 @@ import java.util.List;
 public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> implements IGoodsView {
     private FragmentHomeBinding binding;
     private static boolean sign;
-    private static FragmentActivity context;
+    public static FragmentActivity context;
 
     private LinearLayoutManager linearLayoutManagermanager;
     private GoodsAdapter goodsAdapter;
+    private List<Goods> listgood;
 
     public static HomeFragment NewInstance() {
         HomeFragment fragment = new HomeFragment();
@@ -59,8 +60,8 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding=FragmentHomeBinding.inflate(inflater,container,false);
-        context=getActivity();
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        context = getActivity();
         sign = SharedPreferencesUtils.getSignState(context);
         return binding.getRoot();
     }
@@ -78,16 +79,19 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        refreshData();
         presenter.fatch();
-
         initevent();
         //未登录 点击事件无效
         binding.homeAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, AddGoodsActivity.class);
-                startActivity(intent);
+                if (sign) {
+                    Intent intent = new Intent(context, AddGoodsActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtils.shortToast(getActivity(), "请检查登录！");
+                }
             }
         });
     }
@@ -95,115 +99,122 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
     @Override
     public void onResume() {
         super.onResume();
-        initevent();
+        if (sign) {
+            initevent();
+            refreshData();
+        }
+
     }
 
     private void initevent() {
-
+//        boolean flag=DButil.test();
+//        Log.e("test",""+flag);
     }
-
-//    @Override
-//    public void onCreateContextMenu(@NonNull ContextMenu menu, @NonNull View v, @Nullable ContextMenu.ContextMenuInfo menuInfo) {
-////        super.onCreateContextMenu(menu, v, menuInfo);
-//        getActivity().getMenuInflater().inflate(R.menu.goods_option,menu);
-//        RecyclerViewWithContextMenu.RecyclerViewContextInfo info=(RecyclerViewWithContextMenu.RecyclerViewContextInfo)menuInfo;
-//        if (info!=null&&info.getPosition()!=-1){
-//            goodsAdapter=(GoodsAdapter) recyclerView.getAdapter();
-//            good = goodsAdapter.getItem(info.getPosition());
-//        }
-//    }
-//
-//    @Override   //长按事件  删除或修改商品
-//    public boolean onContextItemSelected(@NonNull MenuItem item) {
-//        GoodsDBHelper helper=GoodsDBHelper.getInstance(getActivity(),1);
-//        helper.openWriteLink();
-//        switch (item.getItemId()){
-//            case R.id.good_reset:
-//                //修改操作
-//                CommenTips.shortTips(getActivity(), "reset。。。。。");
-//                break;
-//            case R.id.good_delete:
-//                CommenTips.shortTips(getActivity(), "delete。。。。。");
-//                break;
-//        }
-//        helper.closeLink();
-//        return super.onContextItemSelected(item);
-//    }
 
     @Override
     public void showGoodsView(List<Goods> goodsList) {
         linearLayoutManagermanager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);   //环境上下文,布局方向，倒序显示
         binding.homeRecycler.setLayoutManager(linearLayoutManagermanager);    /* recyclerView 为空  注意fragment的生命周期 oncreate -> oncreateView */
-        goodsAdapter = new GoodsAdapter(goodsList, getActivity());
-        binding.homeRecycler.setAdapter(goodsAdapter);
-        //点击事件 单个商品 查看商品详情信息
-        goodsAdapter.setOnGoodsItemClickListener(new GoodsAdapter.onGoodsItemClickListener() {
-            @Override//点击事件 单个商品 查看商品详情信息
-            public void onItemClick(View view, int position, Goods good) {
-                Log.e("tag", "点击事件  商品" + position + "详情");
-                View v=getLayoutInflater().inflate(R.layout.detail_good,null);
-                PopupWindow window=new PopupWindow(v,ViewGroup.LayoutParams.MATCH_PARENT,UIutils.dip2px(getActivity(),500));
-                if (window.isShowing()) window.dismiss();
-                window.setBackgroundDrawable(new BitmapDrawable());
-                window.setFocusable(true);
-                window.setOutsideTouchable(true);
-                window.update();
-                window.showAtLocation(getActivity().findViewById(R.id.home_recycler), Gravity.BOTTOM,0, UIutils.dip2px(getActivity(),59));
-                TextView name=v.findViewById(R.id.tv_good_name);
-                name.setText(good.Gname);
-                ImageView img=v.findViewById(R.id.iv_good_img);
-                img.setImageBitmap(BitmapFactory.decodeFile(good.image));
-                TextView num=v.findViewById(R.id.tv_good_salenum);
-                num.setText(good.salenum+"");
-                TextView taste=v.findViewById(R.id.tv_good_taste);
-                taste.setText(good.taste);
-                TextView desc=v.findViewById(R.id.tv_good_desc);
-                desc.setText(good.desc);
-                RecyclerView rvSay=v.findViewById(R.id.rv_say);
-                //评论展示
-                SayDBHelper sayDBHelper=SayDBHelper.getInstance(getActivity(),1);
-                List<Say> says=new ArrayList<>();
-//                if (sayDBHelper.findByGood(good.Gid)!=null){
-//                    Log.e("tag","null");
-//                    rvSay.setAdapter(new SayAdapter(says,getActivity()));
-//                }
-                v.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        window.dismiss();
+        if (sign) {
+            goodsAdapter = new GoodsAdapter(goodsList, getActivity());
+            binding.homeRecycler.setAdapter(goodsAdapter);
+            //点击事件 单个商品 查看商品详情信息
+            goodsAdapter.setOnGoodsItemClickListener(new GoodsAdapter.onGoodsItemClickListener() {
+                @Override//点击事件 单个商品 查看商品详情信息
+                public void onItemClick(View view, int position, Goods good) {
+                    Log.e("tag", "点击事件  商品" + position + "详情");
+                    View v = getLayoutInflater().inflate(R.layout.detail_good, null);
+                    PopupWindow window = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, UIutils.dip2px(getActivity(), 500));
+                    if (window.isShowing()) window.dismiss();
+                    window.setBackgroundDrawable(new BitmapDrawable());
+                    window.setFocusable(true);
+                    window.setOutsideTouchable(true);
+                    window.update();
+                    window.showAtLocation(getActivity().findViewById(R.id.home_recycler), Gravity.BOTTOM, 0, UIutils.dip2px(getActivity(), 59));
+                    TextView name = v.findViewById(R.id.tv_good_name);
+                    name.setText(good.getGname());
+                    ImageView img = v.findViewById(R.id.iv_good_img);
+                    img.setImageBitmap(BitmapFactory.decodeFile(good.getImage()));
+                    TextView num = v.findViewById(R.id.tv_good_salenum);
+                    num.setText(good.getSalenum() + "");
+                    TextView taste = v.findViewById(R.id.tv_good_taste);
+                    taste.setText(good.getTaste());
+                    TextView desc = v.findViewById(R.id.tv_good_desc);
+                    desc.setText(good.getDesc());
+                    RecyclerView rvSay = v.findViewById(R.id.rv_say);
+                    //评论展示
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+                    SayDBHelper sayDBHelper = SayDBHelper.getInstance(getActivity());
+                    sayDBHelper.openReadLink();
+                    List<Say> says = sayDBHelper.findByGood(good.getGid());
+                    if (says != null) {
+                        Log.e("tag", "null");
+                        rvSay.setLayoutManager(layoutManager);
+                        rvSay.setAdapter(new SayAdapter(says, getActivity()));
                     }
-                });
+                    v.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            window.dismiss();
+                        }
+                    });
+                }
+
+                @Override
+                public void onItemLongClick(View view, int position, Goods goods) {
+                    View v = getLayoutInflater().inflate(R.layout.good_option, null);
+                    PopupWindow window = new PopupWindow(v, 300, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    if (window.isShowing()) window.dismiss();
+                    window.setBackgroundDrawable(new BitmapDrawable());
+                    window.setFocusable(true);
+                    window.setOutsideTouchable(true);
+                    window.update();
+                    window.showAsDropDown(view, 500, -150);
+                    v.findViewById(R.id.tv_op1).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getActivity(), ResetGoodActivity.class);
+                            startActivity(intent);
+                            window.dismiss();
+                        }
+                    });
+                    v.findViewById(R.id.tv_op2).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            GoodsDBHelper helper = GoodsDBHelper.getInstance(getActivity());
+                            if (helper.delete(goods.getGname()))
+                                ToastUtils.shortToast(getActivity(), "删除成功");
+                            window.dismiss();
+                            refreshData();
+                        }
+                    });
+                }
+            });
+        } else {
+            listgood = new ArrayList<>();
+            for (int i = 0; i < 10; i++) {
+                Goods good = new Goods("商品" + 1, 10.5, "试用商品", "不知道", "不知道", "不能吃");
+                listgood.add(good);
             }
-
-            @Override
-            public void onItemLongClick(View view, int position, Goods goods) {
-                View v=getLayoutInflater().inflate(R.layout.good_option,null);
-                PopupWindow window=new PopupWindow(v,300,ViewGroup.LayoutParams.WRAP_CONTENT);
-                if (window.isShowing()) window.dismiss();
-                window.setBackgroundDrawable(new BitmapDrawable());
-                window.setFocusable(true);
-                window.setOutsideTouchable(true);
-                window.update();
-                window.showAsDropDown(view,500,-150);
-                v.findViewById(R.id.tv_op1).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent=new Intent(getActivity(), ResetGoodActivity.class);
-                        startActivity(intent);
-                        window.dismiss();
-                    }
-                });
-                v.findViewById(R.id.tv_op2).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        GoodsDBHelper helper=GoodsDBHelper.getInstance(getActivity(),1);
-                        if (helper.delete(goods.Gname)) ToastUtils.shortToast(getActivity(),"删除成功");
-                        window.dismiss();
-                    }
-                });
-            }
-
-        });
-
+            goodsAdapter = new GoodsAdapter(listgood, getActivity());
+        }
     }
+
+    private void refreshData() {
+        List<Goods> list = new ArrayList<>();
+        GoodsDBHelper helper = GoodsDBHelper.getInstance(context);
+        helper.getReadableDatabase();
+        list = helper.queryAll();
+        if (list.size() == 0) {
+            binding.tvNoData.setVisibility(View.VISIBLE);
+        } else {
+            binding.tvNoData.setVisibility(View.GONE);
+        }
+        if (goodsAdapter != null) {
+            goodsAdapter.setData(list);
+        }
+    }
+
+
+
 }

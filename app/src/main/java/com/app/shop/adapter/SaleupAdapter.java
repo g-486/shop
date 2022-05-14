@@ -39,7 +39,7 @@ public class SaleupAdapter extends RecyclerView.Adapter<SaleupAdapter.GoodsHodle
 
     @Override
     public void onBindViewHolder(@NonNull GoodsHodler holder, int position) {
-        String path = data.get(position).image;
+        String path = data.get(position).getImage();
         if (path != null && !path.equals("")) {
             Bitmap bitmap = BitmapFactory.decodeFile(path);
             holder.icon.setImageBitmap(bitmap);
@@ -47,8 +47,8 @@ public class SaleupAdapter extends RecyclerView.Adapter<SaleupAdapter.GoodsHodle
             //使用默认的图片
             holder.icon.setImageResource(R.mipmap.ic_launcher);
         }
-        holder.name.setText(data.get(position).Gname);
-        holder.num.setText(String.valueOf(data.get(position).salenum));
+        holder.name.setText(data.get(position).getGname());
+        holder.num.setText(String.valueOf(data.get(position).getSalenum()));
         //点击事件   点解条目，可查看商品的更详细信息
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +58,12 @@ public class SaleupAdapter extends RecyclerView.Adapter<SaleupAdapter.GoodsHodle
                 }
             }
         });
+    }
+
+    public void setData(List<Goods> data){
+        this.data.clear();
+        this.data.addAll(data);
+        notifyDataSetChanged();
     }
 
     @Override

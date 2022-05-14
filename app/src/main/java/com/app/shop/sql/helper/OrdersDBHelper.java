@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.app.shop.sql.Dao.OrdersDao;
 import com.app.shop.sql.table.Orders;
@@ -21,24 +24,19 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
     private static OrdersDBHelper mHelper = null;
     private SQLiteDatabase mDB = null;
 
-    public OrdersDBHelper(Context context, int version) {
-        super(context, DBname, null, version);
+    public OrdersDBHelper(@Nullable Context context) {
+        super(context);
     }
 
-    public OrdersDBHelper(Context context) {
-        super(context, DBname, null, DB_VERSION);
-    }
-
-    public OrdersDBHelper getInstance(Context context, int version) {
-        if (mHelper == null && version > 0) {
-            mHelper = new OrdersDBHelper(context, version);
-        } else if (mHelper == null) {
+    public static OrdersDBHelper getInstance(Context context) {
+        if (mHelper == null) {
             mHelper = new OrdersDBHelper(context);
         }
+        mHelper.getReadableDatabase();
+        mHelper.getWritableDatabase();
         return mHelper;
     }
 
-    @Override
     public void closeLink() {
         if (mDB.isOpen()) {
             mDB.close();
@@ -48,32 +46,28 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
         }
     }
 
-    @Override
-    public SQLiteDatabase openReadLink() {
+    public void openReadLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getReadableDatabase();
         }
-        return mDB;
     }
 
-    @Override
-    public SQLiteDatabase openWriteLink() {
+    public void openWriteLink() {
         if (mDB == null || !mDB.isOpen()) {
             mDB = mHelper.getWritableDatabase();
         }
-        return mDB;
     }
 
     //只在第一次打开数据库时执行
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String drop = String.format("drop table if exists %s ;", table_name);
-        sqLiteDatabase.execSQL(drop);
-        String create = String.format("create table if not exists %s("
-                + "_id integer primary key autoincrement not null,"
-                + "uid integer," + "sumprice float," + "level integer,"
-                + "foods varchar," + "date varchar," + "other varchar)", table_name);
-        sqLiteDatabase.execSQL(create);
+//        String drop = String.format("drop table if exists %s ;", table_name);
+//        sqLiteDatabase.execSQL(drop);
+//        String create = String.format("create table if not exists %s("
+//                + "_id integer primary key autoincrement not null,"
+//                + "uid integer," + "sumprice float," + "level integer,"
+//                + "foods varchar," + "date varchar," + "other varchar)", table_name);
+//        sqLiteDatabase.execSQL(create);
     }
 
     @Override
@@ -85,14 +79,14 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
     public boolean insert(Orders orders) {
         openWriteLink();
         ContentValues cv = new ContentValues();
-        cv.put("Uid", orders.Uid);
-        cv.put("sumprice", orders.sumPrice);
-        cv.put("level", orders.level);
-        cv.put("foods", orders.foods);
-        cv.put("data", orders.date);
-        cv.put("other", orders.other);
-//        String sql="insert into orders(uid,sumprice,level,foods,data,other) values (?,?,?,?,?,?)";
-//        mDB.execSQL(sql,new Object[]{orders.Uid, orders.sumPrice,orders.level,orders.foods,orders.date,orders.other});
+        cv.put("uid", orders.getUid());
+        cv.put("date", orders.getDate());
+        cv.put("sumprice", orders.getSumPrice());
+        cv.put("level", orders.getLevel());
+        cv.put("foods", orders.getFoods());
+        cv.put("other", orders.getOther());
+//        String sql="insert into orders(uid,sumprice,level,foods,date,other) values (?,?,?,?,?,?)";
+//        mDB.execSQL(sql,new Object[]{orders.getUid(), orders.getSumPrice(),orders.getLevel(),orders.getFoods(),orders.getDate(),orders.getOther()});
         return mDB.insert(table_name, null, cv) > 0;
     }
 
@@ -109,43 +103,85 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
     @Override
     public List<Orders> queryAll() {
         openReadLink();
+        Log.e("test", mDB.toString() + "");
 //        String sql = String.format("select _id,uid,sumprice,level,foods,data,other from %s", table_name);
         List<Orders> list = new ArrayList<>();
-        Cursor cursor = mDB.query(table_name, null, null, null, null, null, null);
+        Cursor cursor = mDB.query(table_name, null, null, null, null, null, "_id desc");
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Orders order = new Orders();
-                order.Oid = cursor.getInt(cursor.getColumnIndex("rowid"));
-                order.Uid = cursor.getInt(cursor.getColumnIndex("uid"));
-                order.sumPrice = cursor.getDouble(cursor.getColumnIndex("sumprice"));
-                order.level = cursor.getInt(cursor.getColumnIndex("level"));
-                order.foods = cursor.getString(cursor.getColumnIndex("foods"));
-                order.date = cursor.getString(cursor.getColumnIndex("data"));
-                order.other = cursor.getString(cursor.getColumnIndex("other"));
+                order.setOid(cursor.getInt(cursor.getColumnIndex("_id")));
+                order.setUid(cursor.getInt(cursor.getColumnIndex("uid")));
+                order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
+                order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
+                order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
+                order.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+                order.setOther(cursor.getString(cursor.getColumnIndex("other")));
                 list.add(order);
             }
-        }cursor.close();
+        }
+        cursor.close();
         return list;
     }
 
     @Override
     public List<Orders> queryBy(String conditon) {
         openReadLink();
-        List<Orders> list=new ArrayList<>();
-        Cursor cursor = mDB.query(table_name, null, null, null, null, null, null);
+        List<Orders> list = new ArrayList<>();
+        Cursor cursor = mDB.query(table_name, null, null, null, null, null, "_id desc");
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Orders order = new Orders();
-                order.Oid = cursor.getInt(cursor.getColumnIndex("rowid"));
-                order.Uid = cursor.getInt(cursor.getColumnIndex("uid"));
-                order.sumPrice = cursor.getDouble(cursor.getColumnIndex("sumprice"));
-                order.level = cursor.getInt(cursor.getColumnIndex("level"));
-                order.foods = cursor.getString(cursor.getColumnIndex("foods"));
-                order.date = cursor.getString(cursor.getColumnIndex("data"));
-                order.other = cursor.getString(cursor.getColumnIndex("other"));
+                order.setOid(cursor.getInt(cursor.getColumnIndex("_id")));
+                order.setUid(cursor.getInt(cursor.getColumnIndex("uid")));
+                order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
+                order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
+                order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
+                order.setDate(cursor.getLong(cursor.getColumnIndex("data")));
+                order.setOther(cursor.getString(cursor.getColumnIndex("other")));
                 list.add(order);
             }
-        }cursor.close();
+        }
+        cursor.close();
+        return list;
+    }
+
+    public List<Orders> findBy(String id, String date) {
+        openReadLink();
+        String where = "";
+        String[] position = {};
+        if (!id.equals("") && date.equals("")) {
+            where = "uid=?";
+            position = new String[]{id};
+        }
+        if (id.equals("") && !date.equals("")) {
+            where = "uid=?";
+            position = new String[]{id};
+        }
+        if (!id.equals("") && !date.equals("")) {
+            where = "uid=? and date>?";
+            position = new String[]{id, date};
+        }
+        if (id.equals("") && date.equals("")) {
+            where = null;
+            position = null;
+        }
+        List<Orders> list = new ArrayList<>();
+        Cursor cursor = mDB.query(table_name, null, where, position, null, null, "_id desc");
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                Orders order = new Orders();
+                order.setOid(cursor.getInt(cursor.getColumnIndex("_id")));
+                order.setUid(cursor.getInt(cursor.getColumnIndex("uid")));
+                order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
+                order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
+                order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
+                order.setDate(cursor.getLong(cursor.getColumnIndex("data")));
+                order.setOther(cursor.getString(cursor.getColumnIndex("other")));
+                list.add(order);
+            }
+        }
+        cursor.close();
         return list;
     }
 }
