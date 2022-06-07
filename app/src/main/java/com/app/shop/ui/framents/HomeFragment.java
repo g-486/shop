@@ -26,8 +26,10 @@ import com.app.shop.base.BaseFragment;
 import com.app.shop.databinding.FragmentHomeBinding;
 import com.app.shop.presenter.GoodsPresenter;
 import com.app.shop.sql.helper.GoodsDBHelper;
+import com.app.shop.sql.helper.OrdersDBHelper;
 import com.app.shop.sql.helper.SayDBHelper;
 import com.app.shop.sql.table.Goods;
+import com.app.shop.sql.table.Orders;
 import com.app.shop.sql.table.Say;
 import com.app.shop.ui.activity.AddGoodsActivity;
 import com.app.shop.ui.activity.ResetGoodActivity;
@@ -37,7 +39,9 @@ import com.app.shop.utils.UIutils;
 import com.app.shop.view.IGoodsView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * create by 呵呵 on 2022/3/17.
@@ -79,46 +83,75 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        refreshData();
-        presenter.fatch();
-        initevent();
-        //未登录 点击事件无效
-        binding.homeAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (sign) {
-                    Intent intent = new Intent(context, AddGoodsActivity.class);
-                    startActivity(intent);
-                } else {
-                    ToastUtils.shortToast(getActivity(), "请检查登录！");
+        if (sign) {
+            initevent();
+            presenter.fatch();
+            refreshData();
+            //未登录 点击事件无效
+            binding.homeAdd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (sign) {
+                        Intent intent = new Intent(context, AddGoodsActivity.class);
+                        startActivity(intent);
+                    } else {
+                        ToastUtils.shortToast(getActivity(), "请检查登录！");
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (sign) {
-            initevent();
             refreshData();
+            String name = SharedPreferencesUtils.getAppName(getActivity());
+            binding.shopName.setText(name);
         }
-
     }
 
     private void initevent() {
-//        boolean flag=DButil.test();
-//        Log.e("test",""+flag);
+        binding.shopName.setText(SharedPreferencesUtils.getAppName(getActivity()));
+        //更新销量
+        Map<String, Integer> goodsMap = new HashMap<>();
+        GoodsDBHelper goodsDBHelper = GoodsDBHelper.getInstance(getActivity());
+        List<Goods> goods = goodsDBHelper.queryAll();
+        for (int i = 0; i < goods.size(); i++) {
+            goodsMap.put(goods.get(i).getGname(), 0);
+        }
+        OrdersDBHelper ordersDBHelper = OrdersDBHelper.getInstance(getActivity());
+        List<Orders> orders = ordersDBHelper.queryAll();
+        for (int i = 0; i < orders.size(); i++) {
+            String[] food = orders.get(i).getFoods().split("，");
+            for (int j = 0; j < food.length; j++) {
+                try {
+                    Integer num = new Integer(goodsMap.get(food[j]));
+                    num += 1;
+                    goodsMap.put(food[j], num);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                }
+            }
+        }
+        //更新销量
+        for (int i = 0; i < goods.size(); i++) {
+            Goods goods1 = goods.get(i);
+            goods1.setSalenum(goodsMap.get(goods1.getGname()));
+            goodsDBHelper.updataNum(goods1);
+        }
     }
 
     @Override
     public void showGoodsView(List<Goods> goodsList) {
         linearLayoutManagermanager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);   //环境上下文,布局方向，倒序显示
         binding.homeRecycler.setLayoutManager(linearLayoutManagermanager);    /* recyclerView 为空  注意fragment的生命周期 oncreate -> oncreateView */
+        goodsAdapter = new GoodsAdapter(goodsList, getActivity());
+        binding.homeRecycler.setAdapter(goodsAdapter);
+        //点击事件 单个商品 查看商品详情信息
         if (sign) {
-            goodsAdapter = new GoodsAdapter(goodsList, getActivity());
-            binding.homeRecycler.setAdapter(goodsAdapter);
-            //点击事件 单个商品 查看商品详情信息
             goodsAdapter.setOnGoodsItemClickListener(new GoodsAdapter.onGoodsItemClickListener() {
                 @Override//点击事件 单个商品 查看商品详情信息
                 public void onItemClick(View view, int position, Goods good) {
@@ -147,10 +180,12 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
                     SayDBHelper sayDBHelper = SayDBHelper.getInstance(getActivity());
                     sayDBHelper.openReadLink();
                     List<Say> says = sayDBHelper.findByGood(good.getGid());
-                    if (says != null) {
+                    if (says.size() != 0) {
                         Log.e("tag", "null");
                         rvSay.setLayoutManager(layoutManager);
                         rvSay.setAdapter(new SayAdapter(says, getActivity()));
+                    } else {
+                        rvSay.setVisibility(View.GONE);
                     }
                     v.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -190,13 +225,6 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
                     });
                 }
             });
-        } else {
-            listgood = new ArrayList<>();
-            for (int i = 0; i < 10; i++) {
-                Goods good = new Goods("商品" + 1, 10.5, "试用商品", "不知道", "不知道", "不能吃");
-                listgood.add(good);
-            }
-            goodsAdapter = new GoodsAdapter(listgood, getActivity());
         }
     }
 
@@ -214,7 +242,5 @@ public class HomeFragment extends BaseFragment<GoodsPresenter, IGoodsView> imple
             goodsAdapter.setData(list);
         }
     }
-
-
 
 }

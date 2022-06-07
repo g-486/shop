@@ -47,17 +47,23 @@
         <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/item_order.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/item_say.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/Shopsss/app/src/main/res/layout/main_tab.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/btn_select_op.xml" value="0.127" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/button_bg_black.xml" value="0.172" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/gray_btn.xml" value="0.132" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/ic_close.xml" value="0.127" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/red_btn.xml" value="0.1225" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/text_select.xml" value="0.127" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/text_unselect.xml" value="0.127" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/drawable/top_radius_box.xml" value="0.132" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_about.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_add_goods.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_addorder.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_addsay.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_adduser.xml" value="0.17144078666096624" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_app_name.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_data_analy.xml" value="0.2" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_login.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_main.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_other_set.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_read_goods.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_read_order.xml" value="0.17144078666096624" />
@@ -65,8 +71,9 @@
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/activity_reset_goods.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/bottom_popupwindow.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/common_toolbar.xml" value="0.17144078666096624" />
-        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/detail_good.xml" value="0.1" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/detail_good.xml" value="0.18" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/detail_order.xml" value="0.20885416666666667" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/edit_dialog.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/fragment_mine.xml" value="0.22" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/fragment_order.xml" value="0.25" />
@@ -75,8 +82,10 @@
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_dialog.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_goods.xml" value="0.20885416666666667" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_order.xml" value="0.17144078666096624" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_ordergood.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_saleup.xml" value="0.20185185185185187" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/item_say.xml" value="0.17144078666096624" />
+        <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/main_tab.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/layout/read_goods_activity.xml" value="0.17144078666096624" />
         <entry key="..\:/Program Files/Android/project/Shop/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1225" />
       </map>

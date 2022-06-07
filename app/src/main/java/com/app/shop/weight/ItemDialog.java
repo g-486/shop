@@ -1,4 +1,4 @@
-package com.app.shop.dialog;
+package com.app.shop.weight;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -41,6 +41,16 @@ public class ItemDialog extends Dialog {
         op1=findViewById(R.id.tv_op1);
         op2=findViewById(R.id.tv_op2);
     }
+    public ItemDialog setOp1(String str1) {
+        this.str1=str1;
+        return this;
+    }
+
+    public ItemDialog setOp2(String str2) {
+        this.str2=str2;
+        return this;
+    }
+
     private void event(){
         op1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,16 +68,6 @@ public class ItemDialog extends Dialog {
                 }
             }
         });
-    }
-
-    public ItemDialog setOp1(String str1) {
-        this.str1=str1;
-        return this;
-    }
-
-    public ItemDialog setOp2(String str2) {
-        this.str2=str2;
-        return this;
     }
     private void refreshView(){
         op1.setText(str1);

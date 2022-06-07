@@ -139,9 +139,20 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_say"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="       该商品还没有评论"
+                android:textSize="15dp"
+                android:textColor="#999999"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_say"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>

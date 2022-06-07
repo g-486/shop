@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/common_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:padding="@dimen/dp_5"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="顾客："
+            android:textColor="#6A000000"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/order_where1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_5"
+            android:paddingLeft="@dimen/dp_5"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingRight="@dimen/dp_5"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="日期："
+            android:textColor="#6A000000"
+            android:textSize="@dimen/dp_20" />
+
+        <EditText
+            android:id="@+id/order_where2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/order_find"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:background="#4A000000"
+            android:paddingLeft="10dp"
+            android:paddingTop="@dimen/dp_5"
+            android:paddingRight="10dp"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="查询"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/dp_20" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/read_orders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

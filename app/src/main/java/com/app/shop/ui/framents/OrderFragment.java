@@ -1,6 +1,7 @@
 package com.app.shop.ui.framents;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -14,13 +15,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.shop.R;
 import com.app.shop.adapter.OrderAdapter;
+import com.app.shop.adapter.OrderGoodAdapter;
 import com.app.shop.adapter.SaleupAdapter;
 import com.app.shop.base.BaseFragment;
 import com.app.shop.databinding.FragmentOrderBinding;
@@ -28,9 +29,11 @@ import com.app.shop.presenter.OrderPresenter;
 import com.app.shop.sql.helper.GoodsDBHelper;
 import com.app.shop.sql.helper.OrdersDBHelper;
 import com.app.shop.sql.helper.SayDBHelper;
+import com.app.shop.sql.helper.UserDBHelper;
 import com.app.shop.sql.table.Goods;
 import com.app.shop.sql.table.Orders;
 import com.app.shop.sql.table.Say;
+import com.app.shop.ui.activity.DataAnalyActivity;
 import com.app.shop.utils.SharedPreferencesUtils;
 import com.app.shop.utils.ToastUtils;
 import com.app.shop.utils.UIutils;
@@ -41,9 +44,7 @@ import java.util.List;
 
 /**
  * create by 呵呵 on 2022/3/17.
- * <p>
- * 图表统计
- * 订单显示
+ *
  */
 public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> implements IOrderView, View.OnClickListener {
     private FragmentOrderBinding binding;
@@ -91,7 +92,9 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
     @Override
     public void onStart() {
         super.onStart();
+        initData();
         initevent();
+
     }
 
     @Override
@@ -110,9 +113,44 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
 
     }
 
+    private void initData() {
+        int num_mon = 0, num_sum = 0;
+        double price_mon = 0, price_sum = 0;
+        if (sign) {
+            List<String> names = new ArrayList<>();
+            GoodsDBHelper goodsDBHelper = GoodsDBHelper.getInstance(getActivity());
+            List<Goods> goods = goodsDBHelper.queryAll();
+            for (int i = 0; i < goods.size(); i++) {
+                names.add(goods.get(i).getGname());
+            }
+            OrdersDBHelper ordersDBHelper = OrdersDBHelper.getInstance(getActivity());
+            List<Orders> orders = ordersDBHelper.queryAll();
+            for (int i = 0; i < orders.size(); i++) {
+                if (Double.parseDouble(orders.get(i).getDate().substring(0, 8)) > 20220500) {
+                    num_mon += 1;
+                    price_mon += orders.get(i).getSumPrice();
+                }
+                price_sum += orders.get(i).getSumPrice();
+            }
+            num_mon=orders.size();
+        }
+        binding.orderSalesum.setText("总销售金额:" + price_sum + "元");//总销售额
+        binding.orderNumsum.setText("已完成订单量：" + num_sum + "单");//总销售量
+        binding.orderSalemoney.setText("本月销售额：" + price_mon + "元");//当月销售额
+        binding.orderNummon.setText("本月完成订单量：" + num_mon + "单");//当月销售量
+
+    }
+
     private void initevent() {
         if (sign) {
-            saleup=getGoods();
+            binding.lookWay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getActivity(), DataAnalyActivity.class);
+                    startActivity(intent);
+                }
+            });
+            saleup = getGoods();
             LinearLayoutManager saleUpManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
             saleupAdapter = new SaleupAdapter(saleup, context);
             binding.goodSaleup.setLayoutManager(saleUpManager);
@@ -142,10 +180,6 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
                     //评论展示
                     SayDBHelper sayDBHelper = SayDBHelper.getInstance(getActivity());
                     List<Say> says = new ArrayList<>();
-//                if (sayDBHelper.findByGood(good.Gid)!=null){
-//                    Log.e("tag","null");
-//                    rvSay.setAdapter(new SayAdapter(says,getActivity()));
-//                }
                     v.findViewById(R.id.iv_close).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -166,7 +200,7 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
 
     @Override
     public void showOrderData(List<Orders> orders) {
-        if (sign){
+        if (sign) {
             orderManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             orderAdapter = new OrderAdapter(context, orders);
             binding.orderRecycler.setLayoutManager(orderManager);
@@ -178,19 +212,39 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
                 @Override
                 public void onItemClick(View view, int position, Orders order) {
                     View v = getLayoutInflater().inflate(R.layout.detail_order, null);
-                    PopupWindow window = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, UIutils.dip2px(getActivity(), 300));
+                    PopupWindow window = new PopupWindow(v, ViewGroup.LayoutParams.MATCH_PARENT, UIutils.dip2px(getActivity(), 400));
                     if (window.isShowing()) window.dismiss();
                     window.setBackgroundDrawable(new BitmapDrawable());
                     window.setFocusable(true);
                     window.setOutsideTouchable(true);
                     window.update();
                     window.showAtLocation(binding.orderRecycler, Gravity.BOTTOM, 0, UIutils.dip2px(getActivity(), 59));
+                    TextView user = v.findViewById(R.id.order_user);
+                    TextView time = v.findViewById(R.id.order_t);
+                    UserDBHelper userDBHelper = UserDBHelper.getInstance(getActivity());
+                    user.setText(userDBHelper.findById(order.getUid() + "").getUname());
+                    String str = order.getDate() + "";
+                    time.setText(str.substring(0, 4) + "-" + str.substring(4, 6) + "-" + str.substring(6, 8) + " " + str.substring(8, 10) + ":" + str.substring(10));
+                    GoodsDBHelper goodsDBHelper = GoodsDBHelper.getInstance(getActivity());
+                    String[] foods = order.getFoods().split("，");
+                    List<Goods> goods = new ArrayList<>();
+                    for (int i = 0; i < foods.length; i++) {
+                        Goods g = new Goods();
+                        g = goodsDBHelper.queryBy(foods[i]).get(0);
+                        goods.add(g);
+                    }
+                    LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    OrderGoodAdapter goodAdapter = new OrderGoodAdapter(goods, getActivity());
+                    RecyclerView rv = v.findViewById(R.id.order_f);
+                    rv.setLayoutManager(layoutManager);
+                    rv.setAdapter(goodAdapter);
                 }
             });
-        }else {
+        } else {
             ToastUtils.shortToast(context, "请检查是否成功登录");
         }
     }
+
     private void refreshData() {
         saleup = getGoods();
         if (saleup.size() == 0) {
@@ -202,14 +256,14 @@ public class OrderFragment extends BaseFragment<OrderPresenter, IOrderView> impl
             saleupAdapter.setData(saleup);
         }
 
-        List<Orders> ordersList=new ArrayList<>();
-        OrdersDBHelper helper=OrdersDBHelper.getInstance(getActivity());
+        List<Orders> ordersList = new ArrayList<>();
+        OrdersDBHelper helper = OrdersDBHelper.getInstance(getActivity());
         helper.openReadLink();
-        ordersList=helper.queryAll();
-        if (ordersList.size()==0||ordersList==null){
+        ordersList = helper.queryAll();
+        if (ordersList.size() == 0 || ordersList == null) {
             binding.tvNoOrder.setVisibility(View.VISIBLE);
-        }else binding.tvNoOrder.setVisibility(View.GONE);
-        if (orderAdapter!=null){
+        } else binding.tvNoOrder.setVisibility(View.GONE);
+        if (orderAdapter != null) {
             orderAdapter.setData(ordersList);
         }
     }

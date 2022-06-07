@@ -27,6 +27,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
     private Button login;
     private TextView to_register;
     private TextView to_refound;
+    private TextView shopName;
     private CheckBox remember;
     private Intent intent;
     private TextView loginIn;
@@ -56,6 +57,7 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
         to_register = findViewById(R.id.to_register);
         to_refound = findViewById(R.id.to_refound);
         remember = findViewById(R.id.login_remember);
+        shopName = findViewById(R.id.shop_name1);
     }
 
     private void event() {
@@ -63,6 +65,8 @@ public class LoginActivity extends BarActivity implements View.OnClickListener {
         loginIn.setOnClickListener(this);
         to_register.setOnClickListener(this);
         to_refound.setOnClickListener(this);
+        String name = SharedPreferencesUtils.getAppName(this);
+        shopName.setText(name);
         remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.OtherSetActivity">
+
+    <include layout="@layout/common_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/login_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="登录账号"
+            android:textColor="#86000000"
+            android:textSize="@dimen/dp_20" />
+
+        <TextView
+            android:id="@+id/set_style"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="设置主题"
+            android:textSize="@dimen/dp_20"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/set_shop_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="设置商店名称"
+            android:textColor="#86000000"
+            android:textSize="@dimen/dp_20" />
+        <TextView
+            android:id="@+id/set_open"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="设置营业时间"
+            android:textColor="#86000000"
+            android:textSize="@dimen/dp_20"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/login_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="退出登录"
+            android:textColor="#86000000"
+            android:textSize="@dimen/dp_20" />
+        <TextView
+            android:id="@+id/out_app"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_5"
+            android:paddingLeft="10dp"
+            android:text="退出程序"
+            android:textColor="#86000000"
+            android:textSize="@dimen/dp_20" />
+
+    </LinearLayout>
+</LinearLayout>

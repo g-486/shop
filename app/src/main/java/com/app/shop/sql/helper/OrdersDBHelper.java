@@ -115,7 +115,7 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
                 order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
                 order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
                 order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
-                order.setDate(cursor.getLong(cursor.getColumnIndex("date")));
+                order.setDate(cursor.getString(cursor.getColumnIndex("date")));
                 order.setOther(cursor.getString(cursor.getColumnIndex("other")));
                 list.add(order);
             }
@@ -137,7 +137,7 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
                 order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
                 order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
                 order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
-                order.setDate(cursor.getLong(cursor.getColumnIndex("data")));
+                order.setDate(cursor.getString(cursor.getColumnIndex("date")));
                 order.setOther(cursor.getString(cursor.getColumnIndex("other")));
                 list.add(order);
             }
@@ -162,24 +162,28 @@ public class OrdersDBHelper extends BaseDBHelper implements OrdersDao {
             where = "uid=? and date>?";
             position = new String[]{id, date};
         }
-        if (id.equals("") && date.equals("")) {
-            where = null;
-            position = null;
-        }
         List<Orders> list = new ArrayList<>();
         Cursor cursor = mDB.query(table_name, null, where, position, null, null, "_id desc");
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                Orders order = new Orders();
-                order.setOid(cursor.getInt(cursor.getColumnIndex("_id")));
-                order.setUid(cursor.getInt(cursor.getColumnIndex("uid")));
-                order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
-                order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
-                order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
-                order.setDate(cursor.getLong(cursor.getColumnIndex("data")));
-                order.setOther(cursor.getString(cursor.getColumnIndex("other")));
-                list.add(order);
+                try {
+                    Orders order = new Orders();
+                    order.setOid(cursor.getInt(cursor.getColumnIndex("_id")));
+                    order.setUid(cursor.getInt(cursor.getColumnIndex("uid")));
+                    order.setSumPrice(cursor.getDouble(cursor.getColumnIndex("sumprice")));
+                    order.setLevel(cursor.getFloat(cursor.getColumnIndex("level")));
+                    order.setFoods(cursor.getString(cursor.getColumnIndex("foods")));
+                    order.setDate(cursor.getString(cursor.getColumnIndex("date")));
+//                    order.setOther(cursor.getString(cursor.getColumnIndex("other")));
+                    list.add(order);
+                    Log.e("aaa", list.size() + "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    e.getMessage();
+                }
+
             }
+            Log.e("aa", "list.size()=" + list.size());
         }
         cursor.close();
         return list;

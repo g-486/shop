@@ -13,7 +13,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -36,6 +35,7 @@ import androidx.core.content.FileProvider;
 import com.app.shop.R;
 import com.app.shop.sql.helper.GoodsDBHelper;
 import com.app.shop.sql.table.Goods;
+import com.app.shop.utils.ToastUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,7 +44,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- *
  * 图片保存与应用内，并重命名，方便查找
  */
 
@@ -65,7 +64,7 @@ public class AddGoodsActivity extends BarActivity {
     public static final int TAKE_PHOTO = 1;//拍照
     public static final int CHOOSE_PHOTO = 2;//相册获取
     private String imagePath; //相册获取的图片存储路径
-    private String saveImagePath;//商品样图存储路径
+//    private String saveImagePath;//商品样图存储路径
     private Uri imageUri;
     //private final String filePath = Environment.getExternalStorageDirectory() + File.separator + "output_image.jpg";
     private String path;//=context.getExternalCacheDir()+File.separator+"output_image.jpg";
@@ -90,10 +89,10 @@ public class AddGoodsActivity extends BarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (n==1){
+        if (n == 1) {
             setDefualtImage();
         }
-        if (n==2){
+        if (n == 2) {
             //设置再次app时显示的图片
             sp = getSharedPreferences("sp_img", MODE_PRIVATE);
             //取出上次存储的图片路径设置此次的图片展示
@@ -116,9 +115,9 @@ public class AddGoodsActivity extends BarActivity {
     }
 
     private void initEVent() {
-        context=AddGoodsActivity.this;
-        path=context.getExternalCacheDir()+File.separator+"output_image.jpg";
-        saveImagePath=context.getExternalFilesDir(null)+File.separator+"";
+        context = AddGoodsActivity.this;
+        path = context.getExternalCacheDir() + File.separator + "output_image.jpg";
+//        saveImagePath = context.getExternalFilesDir(null) + File.separator + "";
         //激活图片路径选择
         goodPic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,18 +136,30 @@ public class AddGoodsActivity extends BarActivity {
 
     private void getData() {
         Goods goods = new Goods();
-        goods.setGname(goodname.getText().toString()+"");
-        goods.setDesc( gooddesc.getText().toString()+"");
-        goods.setPrice( Double.parseDouble(goodprice.getText().toString()));
-        goods.setTaste(goodtaste.getText().toString()+"");
-        goods.setWeight(goodweight.getText().toString()+"");
-        goods.setType(goodtype.getText().toString()+"");
-        goods.setImage(saveImage(imagePath,goods.getGname())+"");
+        goods.setGname(goodname.getText().toString() + "");
+        goods.setDesc(gooddesc.getText().toString() + "");
+        goods.setPrice(Double.parseDouble(goodprice.getText().toString()));
+        goods.setTaste(goodtaste.getText().toString() + "");
+        goods.setWeight(goodweight.getText().toString() + "");
+        goods.setType(goodtype.getText().toString() + "");
+        goods.setImage(saveImage(imagePath, goods.getGname()) + "");
         GoodsDBHelper helper = GoodsDBHelper.getInstance(this);
+        if (goodname.getText().toString().equals("") ||
+                gooddesc.getText().toString().equals("")||
+                goodtype.getText().toString().equals("")||
+                goodweight.getText().toString().equals("")||
+                goodtaste.getText().toString().equals("")||
+                goodprice.getText().toString().equals("")
+        ) {
+            Log.e("aaaa","tianjia");
+        }
         try {
-            if (helper.insert(goods)) Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
-             else Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
-        }catch (Exception e){
+            if (helper.insert(goods)) {
+                Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "添加失败", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             e.getMessage();
         }
@@ -189,7 +200,7 @@ public class AddGoodsActivity extends BarActivity {
                 dialog.dismiss();
                 //打开相册
                 requestPermissino(2);
-                n=2;
+                n = 2;
             }
         });
         //相机
@@ -199,7 +210,7 @@ public class AddGoodsActivity extends BarActivity {
                 dialog.dismiss();
                 //打开相机
                 requestPermissino(1);
-                n=1;
+                n = 1;
             }
         });
         //取消
@@ -293,6 +304,7 @@ public class AddGoodsActivity extends BarActivity {
         Uri uri = data.getData();
         if (DocumentsContract.isDocumentUri(this, uri)) {
             //如果是document类型的Uri，则通过document id处理
+
             String docId = DocumentsContract.getDocumentId(uri);
             if ("com.android.providers.media.documents".equals(uri.getAuthority())) {
                 String id = docId.split(":")[1];  //解析出数字格式的id
@@ -310,27 +322,24 @@ public class AddGoodsActivity extends BarActivity {
             imagePath = uri.getPath();
         }
         displayImage(imagePath); //根据图片路径显示图片
-        Log.e("tag","imagePath="+imagePath);
-        Log.e("tag","saveImagePath="+saveImagePath);
+        Log.e("tag", "imagePath=" + imagePath);
     }
 
-    private String saveImage(String imagePath,String name){
-        if (name==null)return "";
-        String path=saveImagePath+name+".jpg";
+    private String saveImage(String imagePath, String name) {
+        if (name == null) return "";
+        String path = context.getExternalFilesDir(null) + File.separator + name + ".jpg";
         try {
-            File img=new File(imagePath);
-            FileInputStream fis=new FileInputStream(img);
-            FileOutputStream fos=new FileOutputStream(path);
-            byte[] bytes=new byte[1024];
-            int count=0;
-            while ((n=fis.read(bytes))!=-1){
-                fos.write(bytes,0,n);
+            File img = new File(imagePath);
+            FileInputStream fis = new FileInputStream(img);
+            FileOutputStream fos = new FileOutputStream(path);
+            byte[] bytes = new byte[1024];
+            int count = 0;
+            while ((n = fis.read(bytes)) != -1) {
+                fos.write(bytes, 0, n);
             }
             fis.close();
             fos.close();
-        }catch (FileNotFoundException e){
-            e.printStackTrace();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         return path;

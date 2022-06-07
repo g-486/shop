@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.shop.R;
@@ -51,7 +52,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsHodler>
             holder.icon.setImageBitmap(bitmap);
         } else {
             //使用默认的图片
-            holder.icon.setImageResource(R.drawable.ic_food);
+            holder.icon.setBackground(ContextCompat.getDrawable(context,R.drawable.ic_food));
         }
         holder.name.setText(data.get(position).getGname());
         holder.desc.setText(data.get(position).getDesc());

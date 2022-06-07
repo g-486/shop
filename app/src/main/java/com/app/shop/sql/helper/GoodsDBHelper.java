@@ -102,7 +102,7 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
     @Override
     public boolean update(Goods item, String name) {
         openWriteLink();
-        int flag=0;
+//        int flag=0;
         ContentValues cv=new ContentValues();
         cv.put("gname",item.getGname());
         cv.put("price",item.getPrice());
@@ -117,6 +117,20 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
 //        String sql="update goods set price=?,desc=?,type=?,image=?,weight=?,taste=?) where gname=?";
 //        mDB.execSQL(sql,new Object[]{item.price,item.desc,item.type,item.image,item.weight,item.taste,item.Gname});
 //        flag=mDB.update(table_name,cv,name,null);
+    }
+
+    public boolean updataNum(Goods item){
+        openWriteLink();
+        ContentValues cv=new ContentValues();
+        cv.put("gname",item.getGname());
+        cv.put("price",item.getPrice());
+        cv.put("desc",item.getDesc());
+        cv.put("salenum",item.getSalenum());
+        cv.put("type",item.getType());
+        cv.put("image",item.getImage());
+        cv.put("weight",item.getWeight());
+        cv.put("taste",item.getTaste());
+        return mDB.update(table_name,cv,"gname=?",new String[]{item.getGname()})>0;
     }
 
     @Override
@@ -150,9 +164,9 @@ public class GoodsDBHelper extends BaseDBHelper implements GoodsDao {
         openWriteLink();
         List<Goods> list=new ArrayList<>();
         Cursor cursor=mDB.query(table_name,null,"gname=?",new String[]{conditon},null,null,null);
-        if (cursor!=null){
+        if (cursor.moveToNext()){
             Goods good=new Goods();
-            good.setGid(cursor.getInt(cursor.getColumnIndex("_id")));
+//            good.setGid(cursor.getInt(cursor.getColumnIndex("_id")));
             good.setGname(cursor.getString(cursor.getColumnIndex("gname")));
             good.setPrice(cursor.getDouble(cursor.getColumnIndex("price")));
             good.setDesc(cursor.getString(cursor.getColumnIndex("desc")));

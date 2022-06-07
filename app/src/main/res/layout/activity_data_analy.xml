@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/common_toolbar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
+        android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_20"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="近期商品销售情况统计如下："
+            android:textSize="15dp"
+            android:textColor="#333333"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
+                android:src="@drawable/fire"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="本月最畅销商品："
+                android:textSize="15dp"
+                android:textColor="#330000"/>
+            <TextView
+                android:id="@+id/saleupna_me"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="kasbkabk"
+                android:textSize="@dimen/dp_20"
+                android:textColor="#F44336"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
+
+        <com.app.shop.weight.ChartView
+            android:id="@+id/chartview"
+            android:layout_width="wrap_content"
+            android:layout_height="307dp"
+            android:layout_centerInParent="true"
+            app:bgcolor="#ffffff"
+            app:interval="40dp"
+            app:isScroll="false"
+            app:linecolor="#02bbb7"
+            app:xylinecolor="#e2e2e2"
+            app:xylinewidth="2dp"
+            app:xytextcolor="#7e7e7e"
+            app:xytextsize="15sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="本月商品销量统计图"
+            android:textSize="20dp"
+            android:textColor="#aaaaaa"/>
+    </LinearLayout>
+</LinearLayout>

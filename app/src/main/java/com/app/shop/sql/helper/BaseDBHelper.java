@@ -27,7 +27,7 @@ public class BaseDBHelper extends SQLiteOpenHelper {
         String create_orders = "create table if not exists orders("
                 + "_id integer primary key autoincrement not null,"
                 + "uid integer," + "sumprice float," + "level integer,"
-                + "foods varchar," + "date integer," + "other varchar)";
+                + "foods varchar," + "date varchar," + "other varchar)";
         sqLiteDatabase.execSQL(create_orders);
         String create_say="create table if not exists say("+
                 "_id integer primary key autoincrement not null,"+

@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:background="#FAF9E8">
 
             <ImageView
@@ -31,8 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
-                android:layout_toEndOf="@id/mine_head"
-                android:layout_toRightOf="@id/mine_head"
                 android:text="@string/app_name"
                 android:textSize="30dp" />
 
@@ -41,7 +40,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginLeft="150dp"
+                android:layout_marginLeft="120dp"
                 android:src="@mipmap/setting" />
         </LinearLayout>
         <View
@@ -162,6 +161,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#FFEB3B"/>
                 <TextView
                     android:id="@+id/tv_data_event"
                     android:layout_width="match_parent"
@@ -213,25 +216,6 @@
                     android:layout_height="2dp"
                     android:background="#FFEB3B"/>
             </LinearLayout>
-         <!--   <View
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/white"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:id="@+id/tv_out"
-                    android:layout_width="120dp"
-                    android:layout_height="50dp"
-                    android:gravity="center"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/red_btn"
-                    android:text="退出登录"
-                    android:textSize="@dimen/dp_20"
-                    android:textColor="#B0000000"/>
-            </LinearLayout>-->
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

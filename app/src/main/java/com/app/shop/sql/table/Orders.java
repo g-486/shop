@@ -9,14 +9,14 @@ public class Orders {
     private double sumPrice;
     private float level;
     private String foods;
-    private long date;  //下单时间   时间精确到分
+    private String date;  //下单时间   时间精确到分
     // 订单详情页显示  fragment
     private String other; //订单备注
 
     public Orders() {
     }
 
-    public Orders(int oid, int uid, double sumPrice, float level, String foods, long date, String other) {
+    public Orders(int oid, int uid, double sumPrice, float level, String foods, String date, String other) {
         Oid = oid;
         this.uid = uid;
         this.sumPrice = sumPrice;
@@ -66,11 +66,11 @@ public class Orders {
         this.foods = foods;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

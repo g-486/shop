@@ -38,54 +38,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_white_box"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="match_parent" />
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/order_salemoney"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="4dp"
                 android:text="本月销售额："
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/order_salenum"
-                android:layout_width="wrap_content"
+                android:id="@+id/order_salesum"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="4dp"
                 android:text="总销售金额："
                 android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/order_saleorder"
-                android:layout_width="wrap_content"
+                android:id="@+id/order_nummon"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="4dp"
                 android:text="本月完成订单量："
                 android:textSize="15dp" />
 
             <TextView
-                android:id="@+id/order_sale"
-                android:layout_width="wrap_content"
+                android:id="@+id/order_numsum"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginTop="4dp"
                 android:text="已完成订单量："
                 android:textSize="15dp" />
